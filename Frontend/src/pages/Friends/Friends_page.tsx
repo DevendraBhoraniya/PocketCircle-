@@ -15,6 +15,7 @@ import {
   IconTrash,
   IconClock,
   IconExclamation,
+  IconSparkles,
 } from "../../components/Icons";
 
 interface FriendRequest {
@@ -77,7 +78,8 @@ export default function FriendsPage() {
         }
 
         const friendsData: { friends: User[] } = await friendsResponse.json();
-        const requestsData: { incoming: FriendRequest[]; outgoing: FriendRequest[] } = await requestsResponse.json();
+        const requestsData: { incoming: FriendRequest[]; outgoing: FriendRequest[] } =
+          await requestsResponse.json();
 
         if (active) {
           setData({
@@ -88,7 +90,9 @@ export default function FriendsPage() {
         }
       } catch (loadError) {
         if (active) {
-          setError(loadError instanceof Error ? loadError.message : "Could not load your friend list.");
+          setError(
+            loadError instanceof Error ? loadError.message : "Could not load your friend list."
+          );
         }
       } finally {
         if (active) {
@@ -112,7 +116,8 @@ export default function FriendsPage() {
       throw new Error("Could not refresh your friend list.");
     }
     const friendsData: { friends: User[] } = await friendsResponse.json();
-    const requestsData: { incoming: FriendRequest[]; outgoing: FriendRequest[] } = await requestsResponse.json();
+    const requestsData: { incoming: FriendRequest[]; outgoing: FriendRequest[] } =
+      await requestsResponse.json();
     setData({
       friends: friendsData.friends,
       incoming: requestsData.incoming,
@@ -187,7 +192,7 @@ export default function FriendsPage() {
     try {
       await navigator.clipboard.writeText(user.pocket_id);
       setCopied(true);
-      setToast("Pocket ID copied to clipboard!");
+      setToast("Pocket ID copied to clipboard");
       setTimeout(() => setCopied(false), 2200);
     } catch {
       setCopied(true);
@@ -202,12 +207,10 @@ export default function FriendsPage() {
   if (loading || isLoading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center py-12">
-        <div className="pc-sticker-card pc-sticker-cyan max-w-sm px-8 py-10 text-center space-y-4">
-          <div className="mx-auto h-12 w-12 animate-pulse rounded-full border border-black bg-toxic-lime shadow-[2px_2px_0_#000]" />
-          <h2 className="font-display text-2xl font-black uppercase tracking-tight text-black">
-            LOADING CIRCLE...
-          </h2>
-          <p className="text-sm font-medium text-black">Retrieving your friends and requests.</p>
+        <div className="rounded-[24px] border border-sand bg-parchment max-w-sm px-8 py-10 text-center space-y-4">
+          <div className="mx-auto h-10 w-10 animate-spin rounded-full border-2 border-sand border-t-electric-blue" />
+          <h2 className="text-xl font-bold tracking-tight text-ink-black">Loading your circle</h2>
+          <p className="text-sm text-steel">Retrieving members and requests.</p>
         </div>
       </div>
     );
@@ -218,64 +221,77 @@ export default function FriendsPage() {
   }
 
   return (
-    <div className="mx-auto max-w-5xl space-y-8 py-6">
+    <div className="mx-auto max-w-5xl space-y-8 py-4 sm:py-6">
       {/* Toast Notification */}
       {toast && (
         <div
-          className="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 rounded-[16px] border border-black bg-toxic-lime px-4 py-3 text-sm font-bold text-black shadow-[4px_4px_0_#000] animate-bounce"
+          className="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 rounded-full border border-sand bg-paper-white px-5 py-3 text-sm font-medium text-ink-black shadow-[0_4px_20px_rgba(0,0,0,0.12)] transition-all"
           role="status"
         >
-          <IconCheck size={18} />
+          <span className="grid h-5 w-5 place-items-center rounded-full bg-electric-blue text-white text-xs">
+            <IconCheck size={12} />
+          </span>
           <span>{toast}</span>
         </div>
       )}
 
       {/* Header Banner */}
-      <header className="pc-sticker-card pc-sticker-pink grid gap-6 lg:grid-cols-[1fr_auto] lg:items-end p-6 sm:p-8">
+      <header className="rounded-[24px] border border-sand bg-parchment grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center p-6 sm:p-8">
         <div className="space-y-3">
-          <span className="pc-kicker bg-toxic-lime text-black">
-            <IconUsers size={13} />
-            Your Network
-          </span>
-          <h1 className="pc-section-title text-black">
-            THE CIRCLE<br />STARTS HERE.
+          <div className="inline-flex items-center gap-2">
+            <span className="pc-badge pc-badge-dark text-xs">
+              <IconSparkles size={12} className="text-electric-blue" />
+              <span>Friend Directory</span>
+            </span>
+          </div>
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-ink-black">
+            The Circle Starts Here.
           </h1>
-          <p className="max-w-xl text-sm sm:text-base font-medium text-black leading-relaxed">
-            Find friends by username or their 10-digit Pocket ID, send a request, and build your shared ledger circle.
+          <p className="max-w-xl text-sm sm:text-base font-normal text-steel leading-relaxed">
+            Search for members by username or their 10-digit numeric Pocket ID. Connect once, and
+            you&apos;re ready to create shared ledgers with deterministic math.
           </p>
         </div>
 
-        <div className="rounded-[18px] border border-black bg-card-white p-4 text-center shadow-[3px_3px_0_#000]">
-          <p className="text-[10px] font-bold uppercase tracking-wider text-hairline-smoke">Your Pocket ID</p>
-          <div className="flex items-center justify-center gap-2 mt-1">
-            <span className="font-mono text-2xl font-black tracking-wider text-black">{user.pocket_id}</span>
+        {/* Your Pocket ID Card */}
+        <div className="rounded-[20px] border border-sand bg-paper-white p-5 text-center shadow-sm">
+          <p className="text-[11px] font-semibold uppercase tracking-wider text-steel">
+            Your Pocket ID
+          </p>
+          <div className="flex items-center justify-center gap-3 mt-1.5">
+            <span className="font-mono text-xl sm:text-2xl font-bold tracking-widest text-ink-black">
+              {user.pocket_id}
+            </span>
             <button
               onClick={copyPocketId}
-              className="grid h-7 w-7 place-items-center rounded-lg border border-black bg-toxic-lime hover:bg-[#9ee602] transition shadow-[1px_1px_0_#000]"
+              className="grid h-8 w-8 place-items-center rounded-full bg-parchment hover:bg-sand transition text-ink-black"
               title="Copy your Pocket ID"
               aria-label="Copy Pocket ID"
             >
-              {copied ? <IconCheck size={14} /> : <IconCopy size={14} />}
+              {copied ? (
+                <IconCheck size={14} className="text-electric-blue" />
+              ) : (
+                <IconCopy size={14} />
+              )}
             </button>
           </div>
-          <p className="text-[10px] font-medium text-hairline-smoke mt-1">Share this with friends to connect</p>
+          <p className="text-[11px] text-steel mt-1">Share this with friends to connect</p>
         </div>
       </header>
 
       {/* Find Someone Search Section */}
-      <section className="pc-sticker-card pc-sticker-khaki p-6 sm:p-8 space-y-5">
-        <div>
-          <h2 className="font-display text-2xl font-black uppercase tracking-tight text-black">
-            FIND SOMEONE
-          </h2>
-          <p className="text-sm font-medium text-black mt-0.5">
-            Search by username (e.g. <span className="font-bold">alice_12</span>) or their exact 10-digit Pocket ID.
+      <section className="rounded-[24px] border border-sand bg-paper-white p-6 sm:p-8 space-y-5">
+        <div className="space-y-1">
+          <h2 className="text-xl font-bold tracking-tight text-ink-black">Find Circle Members</h2>
+          <p className="text-sm text-steel">
+            Search by username (e.g. <span className="font-medium text-ink-black">alice_12</span>)
+            or exact 10-digit numeric Pocket ID.
           </p>
         </div>
 
         <form onSubmit={searchUsers} className="flex flex-col gap-3 sm:flex-row">
           <div className="relative flex-1">
-            <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-black">
+            <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-steel">
               <IconSearch size={18} />
             </span>
             <input
@@ -295,7 +311,7 @@ export default function FriendsPage() {
                   setResults([]);
                   setHasSearched(false);
                 }}
-                className="absolute inset-y-0 right-0 flex items-center pr-3 text-hairline-smoke hover:text-black"
+                className="absolute inset-y-0 right-0 flex items-center pr-3 text-steel hover:text-ink-black"
                 aria-label="Clear search"
               >
                 <IconClose size={16} />
@@ -304,7 +320,7 @@ export default function FriendsPage() {
           </div>
           <button
             type="submit"
-            className="pc-btn pc-btn-primary h-11 px-6 shrink-0"
+            className="pc-btn pc-btn-primary min-h-[46px] px-7 shrink-0 text-sm"
             disabled={isSearching}
           >
             {isSearching ? (
@@ -321,7 +337,7 @@ export default function FriendsPage() {
         {/* Search Results */}
         {hasSearched && results.length > 0 && (
           <div className="space-y-3 pt-2">
-            <p className="text-xs font-mono font-bold uppercase tracking-wider text-black">
+            <p className="text-xs font-semibold uppercase tracking-wider text-steel">
               Search Results ({results.length})
             </p>
             <div className="grid gap-3">
@@ -333,37 +349,35 @@ export default function FriendsPage() {
                 return (
                   <article
                     key={result.id}
-                    className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between rounded-[16px] border border-black bg-card-white p-4 shadow-[2px_2px_0_#000]"
+                    className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between rounded-[20px] border border-sand bg-parchment p-4"
                   >
                     <div className="flex items-center gap-3">
                       <Avatar name={result.name} url={result.avatar_url} size="md" />
                       <div>
-                        <p className="font-bold text-black leading-tight">{result.name}</p>
-                        <p className="text-xs text-hairline-smoke">
+                        <p className="font-semibold text-ink-black leading-tight">{result.name}</p>
+                        <p className="text-xs text-steel">
                           @{result.username ?? "member"} ·{" "}
-                          <span className="font-mono font-medium">{result.pocket_id}</span>
+                          <span className="font-mono">{result.pocket_id}</span>
                         </p>
                       </div>
                     </div>
 
                     <div className="flex items-center gap-2">
                       {alreadyFriend ? (
-                        <span className="inline-flex items-center gap-1 rounded-full border border-black bg-toxic-lime px-3 py-1 text-xs font-bold text-black">
-                          <IconCheck size={13} />
-                          Already friends
+                        <span className="pc-badge pc-badge-soft text-xs text-steel">
+                          <IconCheck size={13} className="text-electric-blue" />
+                          <span>Already friends</span>
                         </span>
                       ) : pendingOut ? (
-                        <span className="inline-flex items-center gap-1 rounded-full border border-black bg-paper-cream px-3 py-1 text-xs font-bold text-hairline-smoke">
+                        <span className="pc-badge pc-badge-soft text-xs text-steel">
                           <IconClock size={13} />
-                          Request pending
+                          <span>Request pending</span>
                         </span>
                       ) : pendingIn ? (
-                        <span className="inline-flex items-center gap-1 rounded-full border border-black bg-voltage-cyan px-3 py-1 text-xs font-bold text-black">
-                          Review request below
-                        </span>
+                        <span className="pc-badge pc-badge-blue text-xs">Review request below</span>
                       ) : (
                         <button
-                          className="pc-btn pc-btn-primary text-xs"
+                          className="pc-btn pc-btn-primary text-xs py-1.5 px-4 h-9"
                           disabled={actionId === result.id}
                           onClick={() =>
                             performAction(
@@ -390,10 +404,11 @@ export default function FriendsPage() {
 
         {/* Empty Search State */}
         {hasSearched && results.length === 0 && !isSearching && (
-          <div className="rounded-[16px] border border-black bg-card-white p-6 text-center space-y-1 shadow-[2px_2px_0_#000]">
-            <p className="font-bold text-black text-sm">No members found</p>
-            <p className="text-xs text-hairline-smoke">
-              No matching username or Pocket ID for "{query}". Check the 10 digits and try again.
+          <div className="rounded-[18px] border border-sand bg-parchment p-6 text-center space-y-1">
+            <p className="font-semibold text-sm text-ink-black">No circle members found</p>
+            <p className="text-xs text-steel">
+              No matching username or Pocket ID for &quot;{query}&quot;. Verify the digits and try
+              again.
             </p>
           </div>
         )}
@@ -402,10 +417,10 @@ export default function FriendsPage() {
       {/* Error Alert */}
       {error && (
         <div
-          className="flex items-start gap-3 rounded-[16px] border border-black bg-riot-pink p-4 text-sm font-bold text-black shadow-[3px_3px_0_#000]"
+          className="flex items-start gap-3 rounded-[16px] border border-red-200 bg-red-50 p-4 text-sm font-medium text-red-700"
           role="alert"
         >
-          <IconExclamation size={18} className="shrink-0 mt-0.5" />
+          <IconExclamation size={18} className="shrink-0 mt-0.5 text-red-600" />
           <span>{error}</span>
         </div>
       )}
@@ -413,39 +428,41 @@ export default function FriendsPage() {
       {/* Main Dual Sections: Requests for You & Your Friends */}
       <div className="grid gap-8 lg:grid-cols-2">
         {/* Incoming Requests */}
-        <section className="pc-panel p-6 sm:p-7 space-y-5">
-          <div className="flex items-center justify-between border-b border-[#555] pb-3">
-            <h2 className="font-display text-2xl font-black uppercase tracking-tight text-white">
-              REQUESTS FOR YOU
-            </h2>
-            <span className="rounded-full border border-black bg-voltage-cyan px-2.5 py-0.5 text-xs font-black text-black">
+        <section className="rounded-[24px] border border-sand bg-parchment p-6 sm:p-7 space-y-5">
+          <div className="flex items-center justify-between border-b border-sand pb-4">
+            <h2 className="text-xl font-bold tracking-tight text-ink-black">Requests for You</h2>
+            <span className="pc-badge pc-badge-blue text-xs font-semibold">
               {data.incoming.length}
             </span>
           </div>
 
           <div className="space-y-3">
             {data.incoming.length === 0 ? (
-              <div className="rounded-[16px] border border-black bg-card-white p-6 text-center text-black space-y-1 shadow-[2px_2px_0_#000]">
-                <p className="font-bold text-sm">No pending requests</p>
-                <p className="text-xs text-hairline-smoke">When friends add your Pocket ID, their requests show up here.</p>
+              <div className="rounded-[18px] border border-sand bg-paper-white p-6 text-center space-y-1">
+                <p className="font-semibold text-sm text-ink-black">No pending requests</p>
+                <p className="text-xs text-steel">
+                  When someone adds your Pocket ID, their invitation will appear here.
+                </p>
               </div>
             ) : (
               data.incoming.map((request) => (
                 <article
                   key={request.id}
-                  className="rounded-[16px] border border-black bg-card-white p-4 text-black space-y-3 shadow-[2px_2px_0_#000]"
+                  className="rounded-[20px] border border-sand bg-paper-white p-4 space-y-3 shadow-sm"
                 >
                   <div className="flex items-center gap-3">
                     <Avatar name={request.user.name} url={request.user.avatar_url} size="md" />
                     <div>
-                      <p className="font-bold text-black leading-tight">{request.user.name}</p>
-                      <p className="text-xs text-hairline-smoke">@{request.user.username ?? "member"}</p>
+                      <p className="font-semibold text-ink-black leading-tight">
+                        {request.user.name}
+                      </p>
+                      <p className="text-xs text-steel">@{request.user.username ?? "member"}</p>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2 pt-1 border-t border-black/10">
+                  <div className="flex items-center gap-2 pt-2 border-t border-sand">
                     <button
-                      className="pc-btn pc-btn-primary flex-1 text-xs"
+                      className="pc-btn pc-btn-primary flex-1 text-xs h-9"
                       disabled={actionId === request.id}
                       onClick={() =>
                         performAction(
@@ -453,7 +470,7 @@ export default function FriendsPage() {
                           `/friends/requests/${request.id}/accept`,
                           "POST",
                           "Could not accept this request.",
-                          `You are now friends with ${request.user.name}!`
+                          `You are now linked with ${request.user.name}!`
                         )
                       }
                     >
@@ -461,7 +478,7 @@ export default function FriendsPage() {
                       <span>Accept</span>
                     </button>
                     <button
-                      className="pc-btn pc-btn-ghost flex-1 text-xs"
+                      className="pc-btn pc-btn-white flex-1 text-xs h-9"
                       disabled={actionId === request.id}
                       onClick={() =>
                         performAction(
@@ -484,33 +501,36 @@ export default function FriendsPage() {
         </section>
 
         {/* Accepted Friends List */}
-        <section className="pc-sticker-card pc-sticker-cyan p-6 sm:p-7 space-y-5">
-          <div className="flex items-center justify-between border-b border-black pb-3">
-            <h2 className="font-display text-2xl font-black uppercase tracking-tight text-black">
-              YOUR FRIENDS
-            </h2>
-            <span className="rounded-full border border-black bg-toxic-lime px-2.5 py-0.5 text-xs font-black text-black">
+        <section className="rounded-[24px] border border-sand bg-paper-white p-6 sm:p-7 space-y-5">
+          <div className="flex items-center justify-between border-b border-sand pb-4">
+            <div className="flex items-center gap-2">
+              <IconUsers size={18} className="text-electric-blue" />
+              <h2 className="text-xl font-bold tracking-tight text-ink-black">Your Circle</h2>
+            </div>
+            <span className="pc-badge pc-badge-dark text-xs font-semibold">
               {data.friends.length}
             </span>
           </div>
 
           <div className="space-y-3">
             {data.friends.length === 0 ? (
-              <div className="rounded-[16px] border border-black bg-card-white p-6 text-center text-black space-y-1 shadow-[2px_2px_0_#000]">
-                <p className="font-bold text-sm">No friends added yet</p>
-                <p className="text-xs text-hairline-smoke">Search someone above using their Pocket ID to start your circle.</p>
+              <div className="rounded-[18px] border border-sand bg-parchment p-6 text-center space-y-1">
+                <p className="font-semibold text-sm text-ink-black">No friends linked yet</p>
+                <p className="text-xs text-steel">
+                  Search someone above using their Pocket ID to start your circle.
+                </p>
               </div>
             ) : (
               data.friends.map((friend) => (
                 <article
                   key={friend.id}
-                  className="flex items-center justify-between gap-3 rounded-[16px] border border-black bg-card-white p-3.5 shadow-[2px_2px_0_#000]"
+                  className="flex items-center justify-between gap-3 rounded-[20px] border border-sand bg-parchment p-3.5"
                 >
                   <div className="flex min-w-0 items-center gap-3">
                     <Avatar name={friend.name} url={friend.avatar_url} size="md" />
                     <div className="min-w-0">
-                      <p className="truncate font-bold text-black text-sm">{friend.name}</p>
-                      <p className="truncate text-xs text-hairline-smoke">
+                      <p className="truncate font-semibold text-ink-black text-sm">{friend.name}</p>
+                      <p className="truncate text-xs text-steel">
                         @{friend.username ?? "member"} ·{" "}
                         <span className="font-mono">{friend.pocket_id}</span>
                       </p>
@@ -520,7 +540,7 @@ export default function FriendsPage() {
                   {confirmDeleteId === friend.id ? (
                     <div className="flex items-center gap-1.5 shrink-0">
                       <button
-                        className="rounded-lg border border-black bg-riot-pink px-2.5 py-1 text-xs font-bold text-black hover:bg-[#e000e6] transition shadow-[1px_1px_0_#000]"
+                        className="pc-btn pc-btn-ember text-xs h-8 px-3 py-1"
                         disabled={actionId === friend.id}
                         onClick={() =>
                           performAction(
@@ -535,7 +555,7 @@ export default function FriendsPage() {
                         Confirm
                       </button>
                       <button
-                        className="rounded-lg border border-black bg-card-white px-2 py-1 text-xs font-bold text-black hover:bg-paper-cream transition shadow-[1px_1px_0_#000]"
+                        className="pc-btn pc-btn-white text-xs h-8 px-2.5 py-1"
                         onClick={() => setConfirmDeleteId(null)}
                       >
                         Cancel
@@ -543,13 +563,13 @@ export default function FriendsPage() {
                     </div>
                   ) : (
                     <button
-                      className="pc-btn pc-btn-ghost text-xs px-2.5 py-1 shrink-0"
+                      className="pc-btn pc-btn-white text-xs h-8 px-2.5 py-1 shrink-0"
                       disabled={actionId === friend.id}
                       onClick={() => setConfirmDeleteId(friend.id)}
                       title="Remove friend"
                       aria-label={`Remove ${friend.name}`}
                     >
-                      <IconTrash size={14} />
+                      <IconTrash size={14} className="text-steel" />
                       <span className="hidden sm:inline">Remove</span>
                     </button>
                   )}
@@ -562,30 +582,30 @@ export default function FriendsPage() {
 
       {/* Outgoing Pending Requests */}
       {data.outgoing.length > 0 && (
-        <section className="pc-sticker-card p-6 sm:p-7 space-y-4">
-          <div className="flex items-center justify-between border-b border-black pb-3">
-            <h2 className="font-display text-xl font-black uppercase tracking-tight text-black">
-              SENT REQUESTS ({data.outgoing.length})
+        <section className="rounded-[24px] border border-sand bg-parchment p-6 sm:p-7 space-y-4">
+          <div className="flex items-center justify-between border-b border-sand pb-3">
+            <h2 className="text-lg font-bold tracking-tight text-ink-black">
+              Sent Requests ({data.outgoing.length})
             </h2>
-            <span className="text-xs font-medium text-hairline-smoke">Awaiting approval</span>
+            <span className="text-xs text-steel">Awaiting acceptance</span>
           </div>
 
           <div className="grid gap-3 sm:grid-cols-2">
             {data.outgoing.map((request) => (
               <article
                 key={request.id}
-                className="flex items-center justify-between gap-3 rounded-[16px] border border-black bg-card-white p-3.5 shadow-[2px_2px_0_#000]"
+                className="flex items-center justify-between gap-3 rounded-[20px] border border-sand bg-paper-white p-3.5 shadow-sm"
               >
                 <div className="flex items-center gap-3">
                   <Avatar name={request.user.name} url={request.user.avatar_url} size="sm" />
                   <div>
-                    <p className="font-bold text-black text-sm">{request.user.name}</p>
-                    <p className="text-xs text-hairline-smoke">Waiting for reply</p>
+                    <p className="font-semibold text-ink-black text-sm">{request.user.name}</p>
+                    <p className="text-xs text-steel">Awaiting approval</p>
                   </div>
                 </div>
 
                 <button
-                  className="pc-btn pc-btn-ghost text-xs px-2.5 py-1"
+                  className="pc-btn pc-btn-white text-xs h-8 px-3 py-1"
                   disabled={actionId === request.id}
                   onClick={() =>
                     performAction(

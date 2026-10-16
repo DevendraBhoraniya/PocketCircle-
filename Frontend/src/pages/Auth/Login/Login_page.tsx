@@ -50,13 +50,13 @@ export default function LoginPage() {
   if (loading || isLoggingIn) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center py-12">
-        <div className="pc-sticker-card pc-sticker-cyan max-w-sm px-8 py-10 text-center space-y-4">
-          <div className="mx-auto h-12 w-12 animate-pulse rounded-full border border-black bg-toxic-lime shadow-[2px_2px_0_#000]" />
-          <h2 className="font-display text-2xl font-black uppercase tracking-tight text-black">
-            AUTHENTICATING...
+        <div className="pc-card pc-card-soft max-w-sm px-8 py-10 text-center space-y-4">
+          <div className="mx-auto h-10 w-10 animate-spin rounded-full border-2 border-sand border-t-electric-blue" />
+          <h2 className="text-xl font-bold tracking-tight text-ink-black">
+            Authenticating session
           </h2>
-          <p className="text-sm font-medium text-black">
-            Verifying your Google identity and preparing your circle.
+          <p className="text-sm font-normal text-steel">
+            Verifying your identity and loading your ledger state.
           </p>
         </div>
       </div>
@@ -65,64 +65,68 @@ export default function LoginPage() {
 
   return (
     <div className="mx-auto grid min-h-[65vh] max-w-5xl items-center gap-12 py-8 lg:grid-cols-2">
-      {/* Left Column: Manifesto & Proof */}
+      {/* Left Column: Editorial Value Proposition */}
       <section className="space-y-6">
-        <span className="pc-kicker">
-          <IconSparkles size={13} />
-          Safe & Simple Auth
-        </span>
-
-        <h1 className="pc-display text-black">
-          SPLIT IT.<br />
-          KEEP IT<br />
-          <span className="inline-block -rotate-1 rounded-[16px] border border-black bg-voltage-cyan px-3 py-1 shadow-[3px_3px_0_#000]">
-            CLEAR.
+        <div className="inline-flex items-center gap-2">
+          <span className="pc-badge pc-badge-soft">
+            <IconSparkles size={14} className="text-electric-blue" />
+            <span>Secure Authentication</span>
           </span>
+        </div>
+
+        <h1 className="pc-display text-ink-black">
+          Access your <br />
+          circle&apos;s <span className="pc-serif-flourish text-electric-blue">ledger</span>.
         </h1>
 
-        <p className="max-w-xl text-lg font-medium leading-relaxed text-black">
-          One-tap sign in with Google. PocketCircle creates your unique 10-digit Pocket ID so friends can find you without exchanging phone numbers.
+        <p className="max-w-xl text-lg font-normal leading-relaxed text-steel">
+          Sign in instantly with Google. PocketCircle creates your unique 10-digit numeric Pocket ID
+          so friends can connect with you without sharing phone numbers or banking credentials.
         </p>
 
         {/* Value Checklist */}
-        <div className="grid gap-3 pt-2 sm:grid-cols-3 lg:grid-cols-1">
-          <div className="flex items-center gap-3 rounded-[16px] border border-black bg-card-white p-3.5 shadow-[2px_2px_0_#000]">
-            <span className="grid h-6 w-6 place-items-center rounded-full border border-black bg-toxic-lime text-xs font-black">
+        <div className="space-y-3 pt-2">
+          <div className="flex items-center gap-3 rounded-[16px] border border-sand bg-parchment p-3.5">
+            <span className="grid h-6 w-6 place-items-center rounded-full bg-electric-blue text-white text-xs">
               <IconCheck size={14} />
             </span>
-            <span className="text-sm font-bold text-black">No bank credentials or passwords stored</span>
+            <span className="text-sm font-medium text-ink-black">
+              Zero bank passwords or UPI PINs ever requested
+            </span>
           </div>
 
-          <div className="flex items-center gap-3 rounded-[16px] border border-black bg-card-white p-3.5 shadow-[2px_2px_0_#000]">
-            <span className="grid h-6 w-6 place-items-center rounded-full border border-black bg-riot-pink text-xs font-black text-black">
+          <div className="flex items-center gap-3 rounded-[16px] border border-sand bg-parchment p-3.5">
+            <span className="grid h-6 w-6 place-items-center rounded-full bg-electric-blue text-white text-xs">
               <IconCheck size={14} />
             </span>
-            <span className="text-sm font-bold text-black">Automatic 10-digit numeric Pocket ID</span>
+            <span className="text-sm font-medium text-ink-black">
+              10-digit numeric Pocket ID for private friend search
+            </span>
           </div>
 
-          <div className="flex items-center gap-3 rounded-[16px] border border-black bg-card-white p-3.5 shadow-[2px_2px_0_#000]">
-            <span className="grid h-6 w-6 place-items-center rounded-full border border-black bg-voltage-cyan text-xs font-black text-black">
+          <div className="flex items-center gap-3 rounded-[16px] border border-sand bg-parchment p-3.5">
+            <span className="grid h-6 w-6 place-items-center rounded-full bg-electric-blue text-white text-xs">
               <IconCheck size={14} />
             </span>
-            <span className="text-sm font-bold text-black">Immutable ledger with reviewable history</span>
+            <span className="text-sm font-medium text-ink-black">
+              Zero-remainder deterministic debt calculations
+            </span>
           </div>
         </div>
       </section>
 
       {/* Right Column: Login Action Card */}
       <section className="relative">
-        <div className="absolute inset-0 translate-x-3 translate-y-3 rounded-[24px] border border-black bg-black opacity-10" />
-
-        <div className="relative pc-sticker-card pc-sticker-khaki p-8 sm:p-10 space-y-6">
-          <div className="space-y-2 border-b border-black pb-6">
-            <span className="font-mono text-xs font-bold uppercase tracking-wider text-hairline-smoke">
-              Account Access
+        <div className="rounded-[24px] border border-sand bg-paper-white p-8 sm:p-10 space-y-6 shadow-[0_4px_24px_rgba(0,0,0,0.04)]">
+          <div className="space-y-1.5 border-b border-sand pb-5">
+            <span className="text-xs font-semibold uppercase tracking-wider text-steel">
+              Command Center
             </span>
-            <h2 className="pc-section-title text-black">
-              JOIN YOUR CIRCLE.
+            <h2 className="text-2xl font-bold tracking-tight text-ink-black">
+              Sign In to PocketCircle
             </h2>
-            <p className="text-sm font-medium text-black">
-              Use your Google account to sign in or create your PocketCircle profile instantly.
+            <p className="text-sm text-steel">
+              Choose your Google account to get started or continue where you left off.
             </p>
           </div>
 
@@ -131,29 +135,33 @@ export default function LoginPage() {
             <div className="flex justify-center sm:justify-start">
               <GoogleLogin
                 onSuccess={handleSuccess}
-                onError={() => setError("Google sign-in was cancelled or unavailable. Please try again.")}
+                onError={() =>
+                  setError("Google sign-in was cancelled or unavailable. Please try again.")
+                }
                 text="continue_with"
-                shape="rectangular"
+                shape="pill"
                 theme="outline"
                 size="large"
                 width="100%"
               />
             </div>
 
+            {/* Error envelope alert */}
             {error && (
               <div
-                className="flex items-start gap-3 rounded-[16px] border border-black bg-riot-pink p-3.5 text-sm font-bold text-black shadow-[2px_2px_0_#000]"
+                className="flex items-start gap-2.5 rounded-[12px] border border-red-200 bg-red-50 p-3.5 text-xs text-red-700"
                 role="alert"
               >
-                <IconExclamation size={18} className="shrink-0 mt-0.5" />
-                <span>{error}</span>
+                <IconExclamation size={16} className="shrink-0 mt-0.5 text-red-600" />
+                <p className="font-medium leading-relaxed">{error}</p>
               </div>
             )}
+          </div>
 
-            <div className="flex items-center gap-2 pt-2 text-xs font-medium text-hairline-smoke">
-              <IconShield size={14} className="shrink-0" />
-              <span>We never share your email or access your contacts.</span>
-            </div>
+          {/* Security badge footer */}
+          <div className="flex items-center gap-2 border-t border-sand pt-5 text-xs text-steel">
+            <IconShield size={16} className="text-electric-blue" />
+            <span>256-bit encrypted authentication. Privacy guaranteed.</span>
           </div>
         </div>
       </section>

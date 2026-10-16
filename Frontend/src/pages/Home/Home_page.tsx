@@ -1,200 +1,277 @@
 import { Link } from "react-router-dom";
-import { IconArrowUpRight, IconShield, IconUsers, IconReceipt, IconSparkles } from "../../components/Icons";
+import {
+  IconArrowUpRight,
+  IconShield,
+  IconUsers,
+  IconReceipt,
+  IconSparkles,
+} from "../../components/Icons";
 
 export default function HomePage() {
   return (
-    <div className="flex flex-col gap-20 sm:gap-28 py-6">
-      {/* Hero Section */}
-      <section className="grid items-center gap-10 lg:grid-cols-[1.2fr_0.8fr]">
+    <div className="flex flex-col gap-16 sm:gap-24 py-4 sm:py-8">
+      {/* 1. Hero Section (Two-Column on White) */}
+      <section className="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr] pt-4">
         <div className="space-y-6">
+          {/* Pre-headline Tagline Badge */}
           <div className="inline-flex items-center gap-2">
-            <span className="pc-kicker">
-              <IconSparkles size={13} />
-              Open Ledger for Friends
+            <span className="pc-badge pc-badge-dark">
+              <IconSparkles size={14} className="text-electric-blue" />
+              <span>Fintech Ledger for Friend Circles</span>
             </span>
           </div>
 
-          <h1 className="pc-display text-black">
-            SPLIT<br />
-            WITH YOUR<br />
-            <span className="inline-block -rotate-2 rounded-[18px] border border-black bg-riot-pink px-4 py-1 text-black shadow-[3px_3px_0_#000]">
-              CIRCLE.
-            </span>
+          {/* Hero Headline with Signature Gambetta Italic Flourish */}
+          <h1 className="pc-display text-ink-black">
+            Shared expenses, <br className="hidden sm:inline" />
+            settled with <br />
+            <span className="pc-serif-flourish text-electric-blue">frictionless</span> clarity.
           </h1>
 
-          <p className="max-w-xl text-lg sm:text-xl font-medium leading-relaxed text-black">
-            The no-nonsense shared expense ledger for roommates, trips, and weekend plans.
-            Track who paid, see exact balances, and settle up externally on your own terms.
+          {/* Subtitle */}
+          <p className="max-w-xl text-lg sm:text-xl font-normal leading-relaxed text-steel">
+            Banker&apos;s ledger accuracy meets effortless group trust. Track who paid, calculate
+            exact debts with zero paisa remainder, and settle up externally on your own terms.
           </p>
 
+          {/* Action CTAs (Ember Orange as the single conversion accent) */}
           <div className="flex flex-wrap items-center gap-4 pt-2">
-            <Link to="/login" className="pc-btn pc-btn-primary min-h-[48px] px-6 text-base">
+            <Link to="/login" className="pc-btn pc-btn-ember min-h-[48px] px-7 text-base shadow-sm">
               <span>Start your circle</span>
               <IconArrowUpRight size={18} />
             </Link>
-            <Link to="/login" className="pc-btn pc-btn-white min-h-[48px] px-6 text-base">
-              <span>Join with Pocket ID</span>
+            <Link to="/login" className="pc-btn pc-btn-ghost min-h-[48px] px-7 text-base">
+              <span>Explore demo ledger</span>
+            </Link>
+          </div>
+
+          <div className="flex items-center gap-6 pt-2 text-xs text-steel">
+            <div className="flex items-center gap-2">
+              <IconShield size={15} className="text-electric-blue" />
+              <span>No bank login or UPI routing</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-electric-blue" />
+              <span>10-digit numeric Pocket IDs</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Hero Credit Card Product Visual Showcase */}
+        <div className="relative">
+          <div className="rounded-[32px] border border-sand bg-parchment p-5 sm:p-7">
+            {/* The Signature Dark Product Card Visual */}
+            <div className="relative aspect-[1.586/1] w-full rounded-[24px] bg-ink-black p-6 sm:p-8 text-white overflow-hidden shadow-[0_12px_32px_rgba(27,29,32,0.18)]">
+              {/* Product Card Gradient Overlay (Blue -> Orange -> Pink/Coral) */}
+              <div
+                className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full opacity-40 blur-3xl"
+                style={{
+                  background:
+                    "radial-gradient(circle, rgba(81,150,254,0.9) 0%, rgba(249,117,78,0.7) 60%, rgba(255,82,143,0.4) 100%)",
+                }}
+              />
+              <div
+                className="pointer-events-none absolute -bottom-16 -left-16 h-48 w-48 rounded-full opacity-25 blur-2xl"
+                style={{
+                  background:
+                    "radial-gradient(circle, rgba(249,117,78,0.8) 0%, rgba(81,150,254,0.5) 100%)",
+                }}
+              />
+
+              {/* Card Header */}
+              <div className="relative z-10 flex items-center justify-between">
+                <div className="flex items-center gap-2.5">
+                  <span className="h-3 w-3 rounded-full bg-electric-blue" />
+                  <span className="font-semibold text-xs tracking-wider uppercase text-paper-white/80">
+                    PocketCircle Ledger
+                  </span>
+                </div>
+                <span className="pc-badge pc-badge-dark text-[11px] bg-graphite border border-white/10 text-white">
+                  Active
+                </span>
+              </div>
+
+              {/* Card Chip Visual */}
+              <div className="relative z-10 mt-6 sm:mt-8 flex items-center gap-3">
+                <div className="h-7 w-10 rounded-md border border-white/20 bg-white/10 flex items-center justify-center">
+                  <div className="h-4 w-6 border-y border-white/30" />
+                </div>
+                <span className="font-mono text-xs tracking-widest text-white/60">
+                  ID: 4892 0184 92
+                </span>
+              </div>
+
+              {/* Card Footer / Balance Info */}
+              <div className="relative z-10 mt-8 sm:mt-10 flex items-end justify-between">
+                <div>
+                  <p className="text-[11px] font-medium text-white/60 uppercase tracking-wider">
+                    Ledger Pool
+                  </p>
+                  <p className="font-semibold text-lg sm:text-xl text-white">
+                    Goa Villa &amp; Meals
+                  </p>
+                </div>
+                <div className="text-right">
+                  <p className="text-[11px] font-medium text-white/60 uppercase tracking-wider">
+                    Net Balance
+                  </p>
+                  <p className="font-mono font-bold text-xl sm:text-2xl text-paper-white">
+                    +₹12,000.00
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Sub-card ticker info */}
+            <div className="mt-4 flex items-center justify-between px-2 text-xs text-steel">
+              <span className="font-medium">Deterministic zero-remainder engine</span>
+              <span className="font-mono text-ink-black font-semibold">4 members settled</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 2. Stat Block Row (4-column row with thin vertical dividers) */}
+      <section className="rounded-[24px] border border-sand bg-parchment p-8 sm:p-10">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="md:border-r md:border-sand md:pr-6 space-y-1">
+            <p className="pc-stat-number">100%</p>
+            <p className="text-sm font-normal text-steel">
+              Mathematical accuracy with zero decimal round-off errors
+            </p>
+          </div>
+
+          <div className="md:border-r md:border-sand md:pr-6 space-y-1">
+            <p className="pc-stat-number">0.00%</p>
+            <p className="text-sm font-normal text-steel">
+              Platform transaction or settlement convenience fees
+            </p>
+          </div>
+
+          <div className="md:border-r md:border-sand md:pr-6 space-y-1">
+            <p className="pc-stat-number">10</p>
+            <p className="text-sm font-normal text-steel">
+              Digit numeric Pocket ID for instant phone-free connection
+            </p>
+          </div>
+
+          <div className="space-y-1">
+            <p className="pc-stat-number">&lt; 1s</p>
+            <p className="text-sm font-normal text-steel">
+              Instant balance recomputation across any split structure
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. Dark Section Panel (Ink Black Contrast Break) */}
+      <section className="pc-full-bleed-dark">
+        <div className="pc-page space-y-8 text-center sm:text-left">
+          <div className="max-w-3xl space-y-4">
+            <span className="pc-badge pc-badge-dark bg-graphite text-white text-xs">
+              The Ledger Philosophy
+            </span>
+            <h2 className="text-3xl sm:text-5xl font-bold tracking-tight text-white leading-tight">
+              The financial system wasn&apos;t built for{" "}
+              <span className="pc-serif-flourish text-electric-blue">friends</span> who trust each
+              other.
+            </h2>
+            <p className="text-base sm:text-lg text-paper-white/80 font-normal leading-relaxed">
+              Traditional apps lock your funds in walled wallets, delay settlements, and bombard you
+              with payment spam. PocketCircle is an immutable, quiet ledger: you track the math,
+              verify balances, and settle via whatever method you prefer.
+            </p>
+          </div>
+
+          <div className="pt-2">
+            <Link to="/login" className="pc-btn pc-btn-primary min-h-[46px] px-7 text-sm">
+              Create your account in 30 seconds
             </Link>
           </div>
         </div>
-
-        {/* Hero Interactive Ledger Preview Card */}
-        <div className="relative">
-          {/* Background offset frame for peeled sticker aesthetic */}
-          <div className="absolute inset-0 translate-x-3 translate-y-3 rounded-[24px] border border-black bg-color-hardware-ink opacity-15" />
-
-          <article className="relative rounded-[24px] border border-black bg-card-white p-6 sm:p-7 shadow-[4px_4px_0_#000]">
-            {/* Header chip */}
-            <div className="flex items-center justify-between border-b border-black pb-4">
-              <div className="flex items-center gap-2.5">
-                <span className="grid h-7 w-7 place-items-center rounded-full border border-black bg-voltage-cyan text-xs font-black">
-                  ₹
-                </span>
-                <span className="font-mono text-xs font-bold uppercase tracking-wider text-hairline-smoke">
-                  LEDGER #84920
-                </span>
-              </div>
-              <span className="rounded-full border border-black bg-toxic-lime px-2.5 py-0.5 text-[11px] font-black uppercase">
-                Active Group
-              </span>
-            </div>
-
-            {/* Bill Title */}
-            <div className="mt-5 space-y-1">
-              <h2 className="font-display text-2xl sm:text-3xl font-black uppercase tracking-tight text-black">
-                GOA VILLA & DINNER
-              </h2>
-              <p className="text-xs font-medium text-hairline-smoke">4 members · Split equally · 0 paisa remainder</p>
-            </div>
-
-            {/* Visual Breakdown Rows */}
-            <div className="mt-5 space-y-2.5">
-              <div className="flex items-center justify-between rounded-[14px] border border-black bg-paper-cream p-3 text-sm">
-                <div className="flex items-center gap-2.5">
-                  <span className="grid h-6 w-6 place-items-center rounded-full border border-black bg-riot-pink text-[10px] font-black text-black">
-                    DB
-                  </span>
-                  <div>
-                    <p className="font-bold text-black leading-tight">Devendra</p>
-                    <p className="text-[11px] text-hairline-smoke">Paid ₹16,000 upfront</p>
-                  </div>
-                </div>
-                <span className="font-mono font-black text-black">+₹12,000</span>
-              </div>
-
-              <div className="flex items-center justify-between rounded-[14px] border border-black bg-card-white p-3 text-sm">
-                <div className="flex items-center gap-2.5">
-                  <span className="grid h-6 w-6 place-items-center rounded-full border border-black bg-voltage-cyan text-[10px] font-black text-black">
-                    NF
-                  </span>
-                  <div>
-                    <p className="font-bold text-black leading-tight">Null Forge</p>
-                    <p className="text-[11px] text-hairline-smoke">Owes Devendra</p>
-                  </div>
-                </div>
-                <span className="font-mono font-bold text-hairline-smoke">-₹4,000</span>
-              </div>
-            </div>
-
-            {/* Bottom Callout */}
-            <div className="mt-6 flex items-center justify-between rounded-[16px] border border-black bg-sticker-khaki p-3.5">
-              <div className="flex items-center gap-2">
-                <IconShield size={16} />
-                <span className="text-xs font-bold text-black">Zero platform fee · Peer settlement</span>
-              </div>
-              <span className="font-mono text-xs font-black">100% Honest</span>
-            </div>
-          </article>
-        </div>
       </section>
 
-      {/* Feature Pillar Grid */}
-      <section className="space-y-8">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-          <div>
-            <span className="pc-kicker">How it works</span>
-            <h2 className="pc-section-title mt-2">
-              FINANCE WITHOUT THE FRICTION.
+      {/* 4. Full-Bleed Electric Blue Feature Section with 3-Column White Card Grid */}
+      <section className="pc-full-bleed-blue">
+        <div className="pc-page space-y-12">
+          {/* Section Header */}
+          <div className="space-y-3">
+            <span className="pc-badge bg-white/20 text-white font-medium text-xs">
+              Product Capabilities
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
+              Engineered for absolute clarity.
             </h2>
-          </div>
-          <p className="max-w-md text-sm font-medium text-hairline-smoke leading-relaxed">
-            PocketCircle strips out all the bloated fintech garbage. No virtual wallets. No ads. Just pure math for friends who trust each other.
-          </p>
-        </div>
-
-        <div className="grid gap-6 md:grid-cols-3">
-          {/* Card 1: Khaki */}
-          <article className="pc-sticker-card pc-sticker-khaki flex flex-col justify-between gap-6 min-h-[260px]">
-            <div>
-              <div className="inline-flex -rotate-3 rounded-full border border-black bg-toxic-lime p-2.5 shadow-[1px_1px_0_#000]">
-                <IconUsers size={22} />
-              </div>
-              <h3 className="font-display text-2xl font-black uppercase tracking-tight text-black mt-4">
-                01. Build your circle
-              </h3>
-              <p className="mt-2 text-sm font-medium leading-relaxed text-black">
-                Find friends instantly using their unique 10-digit Pocket ID or username. Send a request, accept, and you're linked.
-              </p>
-            </div>
-            <div className="border-t border-black/30 pt-3 text-xs font-mono font-bold uppercase tracking-wider text-black">
-              Search by 10 digits
-            </div>
-          </article>
-
-          {/* Card 2: Riot Pink */}
-          <article className="pc-sticker-card pc-sticker-pink flex flex-col justify-between gap-6 min-h-[260px] md:-translate-y-3">
-            <div>
-              <div className="inline-flex rotate-3 rounded-full border border-black bg-card-white p-2.5 shadow-[1px_1px_0_#000]">
-                <IconReceipt size={22} />
-              </div>
-              <h3 className="font-display text-2xl font-black uppercase tracking-tight text-black mt-4">
-                02. Multi-Payer Expenses
-              </h3>
-              <p className="mt-2 text-sm font-medium leading-relaxed text-black">
-                Did two people split the groceries while three paid for cabs? Add multiple payers and custom splits in seconds.
-              </p>
-            </div>
-            <div className="border-t border-black/30 pt-3 text-xs font-mono font-bold uppercase tracking-wider text-black">
-              Deterministic decimal math
-            </div>
-          </article>
-
-          {/* Card 3: Voltage Cyan */}
-          <article className="pc-sticker-card pc-sticker-cyan flex flex-col justify-between gap-6 min-h-[260px]">
-            <div>
-              <div className="inline-flex -rotate-2 rounded-full border border-black bg-card-white p-2.5 shadow-[1px_1px_0_#000]">
-                <IconSparkles size={22} />
-              </div>
-              <h3 className="font-display text-2xl font-black uppercase tracking-tight text-black mt-4">
-                03. Clean Settlements
-              </h3>
-              <p className="mt-2 text-sm font-medium leading-relaxed text-black">
-                PocketCircle computes minimal transactions so debts cancel out. Pay each other via UPI or cash, confirm in one tap.
-              </p>
-            </div>
-            <div className="border-t border-black/30 pt-3 text-xs font-mono font-bold uppercase tracking-wider text-black">
-              Mutual confirmation
-            </div>
-          </article>
-        </div>
-      </section>
-
-      {/* Dark Manifesto Section */}
-      <section className="pc-panel p-8 sm:p-12">
-        <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
-          <div className="space-y-4">
-            <span className="pc-kicker bg-voltage-cyan text-black">The PocketCircle Rule</span>
-            <h2 className="font-display text-3xl sm:text-5xl font-black uppercase tracking-tight text-white leading-tight">
-              WE DON'T TOUCH YOUR MONEY.<br />
-              WE SOLVE THE ARGUMENTS.
-            </h2>
-            <p className="max-w-2xl text-base text-[#e0e0e0] font-medium leading-relaxed">
-              Traditional apps lock your funds in closed wallets, spam payment reminders, or charge processing percentages.
-              PocketCircle is an immutable, shared paper notebook for the digital age. Transparent, fast, and respectful.
+            <p className="max-w-2xl text-base text-white/90 font-normal">
+              Every feature in PocketCircle is built around three core pillars: privacy,
+              mathematical rigor, and zero friction.
             </p>
           </div>
+
+          {/* 3-Column White Card Grid (24px radius, lifts purely by color contrast) */}
+          <div className="grid gap-6 md:grid-cols-3">
+            {/* Feature Card 1 */}
+            <article className="rounded-[24px] bg-paper-white p-6 sm:p-8 space-y-5">
+              <div className="pc-icon-tile">
+                <IconUsers size={22} />
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-xl font-semibold text-ink-black tracking-tight">
+                  Numeric Pocket IDs
+                </h3>
+                <p className="text-sm font-normal text-steel leading-relaxed">
+                  No need to share personal phone numbers or social profiles. Every user gets a
+                  clean 10-digit ID to link friend circles securely.
+                </p>
+              </div>
+            </article>
+
+            {/* Feature Card 2 */}
+            <article className="rounded-[24px] bg-paper-white p-6 sm:p-8 space-y-5">
+              <div className="pc-icon-tile">
+                <IconReceipt size={22} />
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-xl font-semibold text-ink-black tracking-tight">
+                  Multi-Payer Calculations
+                </h3>
+                <p className="text-sm font-normal text-steel leading-relaxed">
+                  Split expenses between multiple spenders and consumers with exact decimal
+                  precision and zero rounding discrepancy.
+                </p>
+              </div>
+            </article>
+
+            {/* Feature Card 3 */}
+            <article className="rounded-[24px] bg-paper-white p-6 sm:p-8 space-y-5">
+              <div className="pc-icon-tile">
+                <IconShield size={22} />
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-xl font-semibold text-ink-black tracking-tight">
+                  Transparent Settlements
+                </h3>
+                <p className="text-sm font-normal text-steel leading-relaxed">
+                  Debts simplify into minimal transactions so fewer payments happen. Settle via cash
+                  or UPI and mark complete mutually.
+                </p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. Pre-footer Conversion Banner */}
+      <section className="rounded-[24px] border border-sand bg-parchment p-8 sm:p-12 text-center space-y-6">
+        <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-ink-black">
+          Ready to bring honesty back to your group bills?
+        </h2>
+        <p className="max-w-xl mx-auto text-base text-steel">
+          Join friend groups who track vacations, apartment rent, and dinners without financial friction.
+        </p>
+        <div className="pt-2">
           <Link to="/login" className="pc-btn pc-btn-primary min-h-[48px] px-8 text-base">
-            Get Started Free
+            Get started for free
           </Link>
         </div>
       </section>

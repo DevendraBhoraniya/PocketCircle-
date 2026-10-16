@@ -1,10 +1,11 @@
 import { useMemo, useState } from 'react';
 
 const COLORS = [
-  'bg-riot-pink text-black',
-  'bg-voltage-cyan text-black',
-  'bg-toxic-lime text-black',
-  'bg-sticker-khaki text-black'
+  'bg-electric-blue text-white',
+  'bg-midnight text-white',
+  'bg-ember-orange text-white',
+  'bg-parchment text-ink-black border border-sand',
+  'bg-graphite text-white'
 ];
 
 interface AvatarProps {
@@ -35,7 +36,7 @@ export default function Avatar({ name, url, size = 'md', className = '' }: Avata
   }, [name]);
 
   const colorClass = useMemo(() => {
-    if (!name) return 'bg-placeholder-ash text-white';
+    if (!name) return 'bg-steel text-white';
     let hash = 0;
     for (let i = 0; i < name.length; i++) {
       hash = name.charCodeAt(i) + ((hash << 5) - hash);
@@ -49,7 +50,7 @@ export default function Avatar({ name, url, size = 'md', className = '' }: Avata
       <img
         src={url}
         alt={name}
-        className={`${sizeClasses[size]} shrink-0 rounded-full border border-black object-cover bg-card-white shadow-[1px_1px_0_#000] ${className}`}
+        className={`${sizeClasses[size]} shrink-0 rounded-full border border-sand object-cover bg-paper-white ${className}`}
         onError={() => setImageFailed(true)}
       />
     );
@@ -57,7 +58,7 @@ export default function Avatar({ name, url, size = 'md', className = '' }: Avata
 
   return (
     <div
-      className={`${sizeClasses[size]} ${colorClass} shrink-0 rounded-full border border-black flex items-center justify-center font-bold tracking-tight select-none shadow-[1px_1px_0_#000] ${className}`}
+      className={`${sizeClasses[size]} ${colorClass} shrink-0 rounded-full flex items-center justify-center font-medium tracking-tight select-none ${className}`}
       aria-label={name}
       title={name}
     >

@@ -10,6 +10,7 @@ import {
   IconSparkles,
   IconArrowUpRight,
   IconLogOut,
+  IconShield,
 } from "../../components/Icons";
 import { apiClient } from "../../api/client";
 
@@ -63,7 +64,6 @@ export default function DashboardPage() {
       setCopied(true);
       setTimeout(() => setCopied(false), 2200);
     } catch {
-      // Fallback
       setCopied(true);
       setTimeout(() => setCopied(false), 2200);
     }
@@ -72,12 +72,12 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center py-12">
-        <div className="pc-sticker-card pc-sticker-cyan max-w-sm px-8 py-10 text-center space-y-4">
-          <div className="mx-auto h-12 w-12 animate-pulse rounded-full border border-black bg-toxic-lime shadow-[2px_2px_0_#000]" />
-          <h2 className="font-display text-2xl font-black uppercase tracking-tight text-black">
-            LOADING CIRCLE...
+        <div className="rounded-[24px] border border-sand bg-parchment max-w-sm px-8 py-10 text-center space-y-4">
+          <div className="mx-auto h-10 w-10 animate-spin rounded-full border-2 border-sand border-t-electric-blue" />
+          <h2 className="text-xl font-bold tracking-tight text-ink-black">
+            Loading your circle
           </h2>
-          <p className="text-sm font-medium text-black">Fetching your ledgers and profile.</p>
+          <p className="text-sm text-steel">Fetching your ledgers and profile.</p>
         </div>
       </div>
     );
@@ -90,123 +90,148 @@ export default function DashboardPage() {
   const firstName = user.name.split(" ")[0];
 
   return (
-    <div className="mx-auto max-w-5xl space-y-8 py-6">
-      {/* Header Profile Banner */}
-      <header className="pc-sticker-card pc-sticker-khaki grid gap-6 sm:grid-cols-[1fr_auto] items-center p-6 sm:p-8">
+    <div className="mx-auto max-w-5xl space-y-8 py-4 sm:py-6">
+      {/* 1. Header Profile Banner */}
+      <header className="rounded-[24px] border border-sand bg-parchment grid gap-6 sm:grid-cols-[1fr_auto] items-center p-6 sm:p-8">
         <div className="space-y-3">
-          <span className="pc-kicker">
-            <IconSparkles size={12} />
-            Active Session
-          </span>
-          <h1 className="pc-section-title text-black">
-            HEY, {firstName.toUpperCase()}.
+          <div className="inline-flex items-center gap-2">
+            <span className="pc-badge pc-badge-dark text-xs">
+              <IconSparkles size={12} className="text-electric-blue" />
+              <span>Active Session</span>
+            </span>
+          </div>
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-ink-black">
+            Welcome back, {firstName}.
           </h1>
-          <p className="max-w-xl text-sm sm:text-base font-medium text-black leading-relaxed">
-            Welcome to your shared expense command center. Check balances, organize trips, and manage friend circles.
+          <p className="max-w-xl text-sm sm:text-base font-normal text-steel leading-relaxed">
+            Your personal financial ledger for friend expenses. Monitor active balances, connect
+            with circle members, and audit calculations in real time.
           </p>
           <div className="flex flex-wrap items-center gap-3 pt-2">
-            <button
-              onClick={handleLogout}
-              className="pc-btn pc-btn-white text-xs"
-            >
-              <IconLogOut size={14} />
+            <Link to="/friends" className="pc-btn pc-btn-primary text-sm">
+              <IconUsers size={16} />
+              <span>Manage friends</span>
+            </Link>
+            <button onClick={handleLogout} className="pc-btn pc-btn-white text-sm">
+              <IconLogOut size={15} />
               <span>Sign out</span>
             </button>
-            <Link to="/friends" className="pc-btn pc-btn-primary text-xs">
-              <IconUsers size={14} />
-              <span>Find friends</span>
-            </Link>
           </div>
         </div>
 
+        {/* Pocket ID Passport Chip */}
         <div className="flex flex-col items-center sm:items-end gap-3">
           <Avatar name={user.name} url={user.avatar_url} size="xl" />
-          <div className="rounded-[16px] border border-black bg-card-white px-4 py-2 text-center shadow-[2px_2px_0_#000]">
-            <p className="text-[10px] font-bold uppercase tracking-wider text-hairline-smoke">Your Pocket ID</p>
-            <div className="flex items-center gap-2 mt-0.5">
-              <span className="font-mono text-lg font-black tracking-wider text-black">{user.pocket_id}</span>
+          <div className="rounded-[16px] border border-sand bg-paper-white px-4 py-2.5 text-center shadow-sm">
+            <p className="text-[11px] font-semibold uppercase tracking-wider text-steel">
+              Your Pocket ID
+            </p>
+            <div className="flex items-center gap-2.5 mt-1">
+              <span className="font-mono text-base font-bold tracking-widest text-ink-black">
+                {user.pocket_id}
+              </span>
               <button
                 onClick={copyPocketId}
-                className="grid h-6 w-6 place-items-center rounded border border-black bg-toxic-lime hover:bg-[#9ee602] transition"
+                className="grid h-7 w-7 place-items-center rounded-full bg-parchment hover:bg-sand transition text-ink-black"
                 title="Copy Pocket ID"
                 aria-label="Copy Pocket ID"
               >
-                {copied ? <IconCheck size={13} /> : <IconCopy size={13} />}
+                {copied ? (
+                  <IconCheck size={14} className="text-electric-blue" />
+                ) : (
+                  <IconCopy size={14} />
+                )}
               </button>
             </div>
-            {copied && <span className="block text-[10px] font-bold text-black mt-1">Copied to clipboard!</span>}
+            {copied && (
+              <span className="block text-[11px] font-medium text-electric-blue mt-0.5">
+                Copied to clipboard
+              </span>
+            )}
           </div>
         </div>
       </header>
 
-      {/* Metrics Strip */}
+      {/* 2. Metrics Ribbon */}
       <section className="grid gap-4 sm:grid-cols-3">
-        <div className="rounded-[18px] border border-black bg-card-white p-5 shadow-[2px_2px_0_#000] flex items-center justify-between">
-          <div>
-            <p className="text-xs font-bold uppercase tracking-wider text-hairline-smoke">Friends Linked</p>
-            <p className="font-display text-3xl font-black text-black mt-1">
+        <div className="rounded-[24px] border border-sand bg-paper-white p-6 flex items-center justify-between">
+          <div className="space-y-1">
+            <p className="text-xs font-semibold uppercase tracking-wider text-steel">
+              Friends Linked
+            </p>
+            <p className="pc-stat-number text-3xl font-bold">
               {friendCount !== null ? friendCount : "..."}
             </p>
+            <p className="text-xs text-steel">Verified circle members</p>
           </div>
-          <span className="grid h-10 w-10 place-items-center rounded-full border border-black bg-voltage-cyan text-black">
+          <div className="pc-icon-tile-soft">
             <IconUsers size={20} />
-          </span>
+          </div>
         </div>
 
-        <div className="rounded-[18px] border border-black bg-card-white p-5 shadow-[2px_2px_0_#000] flex items-center justify-between">
-          <div>
-            <p className="text-xs font-bold uppercase tracking-wider text-hairline-smoke">Active Groups</p>
-            <p className="font-display text-3xl font-black text-black mt-1">0</p>
+        <div className="rounded-[24px] border border-sand bg-paper-white p-6 flex items-center justify-between">
+          <div className="space-y-1">
+            <p className="text-xs font-semibold uppercase tracking-wider text-steel">
+              Active Groups
+            </p>
+            <p className="pc-stat-number text-3xl font-bold">0</p>
+            <p className="text-xs text-steel">Trips &amp; shared ledgers</p>
           </div>
-          <span className="grid h-10 w-10 place-items-center rounded-full border border-black bg-riot-pink text-black">
+          <div className="pc-icon-tile-soft">
             <IconReceipt size={20} />
-          </span>
+          </div>
         </div>
 
-        <div className="rounded-[18px] border border-black bg-card-white p-5 shadow-[2px_2px_0_#000] flex items-center justify-between">
-          <div>
-            <p className="text-xs font-bold uppercase tracking-wider text-hairline-smoke">Net Balance</p>
-            <p className="font-display text-3xl font-black text-black mt-1">₹0.00</p>
+        <div className="rounded-[24px] border border-sand bg-paper-white p-6 flex items-center justify-between">
+          <div className="space-y-1">
+            <p className="text-xs font-semibold uppercase tracking-wider text-steel">
+              Net Balance
+            </p>
+            <p className="pc-stat-number text-3xl font-bold">₹0.00</p>
+            <p className="text-xs text-steel">Settled up cleanly</p>
           </div>
-          <span className="grid h-10 w-10 place-items-center rounded-full border border-black bg-toxic-lime text-black font-black text-sm">
-            ALL GOOD
-          </span>
+          <div className="pc-icon-tile-soft">
+            <IconShield size={20} />
+          </div>
         </div>
       </section>
 
-      {/* Dashboard Main Grid */}
+      {/* 3. Dashboard Main Grid */}
       <div className="grid gap-8 md:grid-cols-3">
-        {/* Left Column: Profile Passport */}
-        <aside className="pc-sticker-card space-y-5 md:col-span-1">
-          <div className="border-b border-black pb-3">
-            <h2 className="font-display text-xl font-black uppercase tracking-tight text-black">
-              MEMBER PROFILE
-            </h2>
-            <p className="text-xs text-hairline-smoke">Public identification details</p>
+        {/* Left Column: Member Profile Passport */}
+        <aside className="rounded-[24px] border border-sand bg-parchment p-6 space-y-6 md:col-span-1">
+          <div className="border-b border-sand pb-4">
+            <h2 className="text-lg font-bold tracking-tight text-ink-black">Member Profile</h2>
+            <p className="text-xs text-steel">Identification credentials</p>
           </div>
 
           <div className="space-y-4 text-sm">
             <div>
-              <p className="text-xs font-bold uppercase tracking-wider text-hairline-smoke">Full Name</p>
-              <p className="font-bold text-black mt-0.5">{user.name}</p>
+              <p className="text-xs font-semibold uppercase tracking-wider text-steel">Full Name</p>
+              <p className="font-semibold text-ink-black mt-0.5">{user.name}</p>
             </div>
 
             <div>
-              <p className="text-xs font-bold uppercase tracking-wider text-hairline-smoke">Username</p>
-              <p className="font-bold text-black mt-0.5">@{user.username ?? "member"}</p>
+              <p className="text-xs font-semibold uppercase tracking-wider text-steel">Username</p>
+              <p className="font-semibold text-ink-black mt-0.5">@{user.username ?? "member"}</p>
             </div>
 
             <div>
-              <p className="text-xs font-bold uppercase tracking-wider text-hairline-smoke">Email</p>
-              <p className="font-medium text-black break-all mt-0.5">{user.email}</p>
+              <p className="text-xs font-semibold uppercase tracking-wider text-steel">Email</p>
+              <p className="font-medium text-ink-black break-all mt-0.5">{user.email}</p>
             </div>
 
-            <div className="rounded-[16px] border border-black bg-toxic-lime p-4 text-center space-y-1 shadow-[2px_2px_0_#000]">
-              <p className="text-[10px] font-black uppercase tracking-widest text-black">Your Shareable Pocket ID</p>
-              <p className="font-mono text-xl font-black tracking-widest text-black">{user.pocket_id}</p>
+            {/* Shareable ID Pill Container */}
+            <div className="rounded-[18px] border border-sand bg-paper-white p-4 space-y-2 text-center">
+              <p className="text-[11px] font-semibold uppercase tracking-widest text-steel">
+                Your Shareable Pocket ID
+              </p>
+              <p className="font-mono text-xl font-bold tracking-widest text-ink-black">
+                {user.pocket_id}
+              </p>
               <button
                 onClick={copyPocketId}
-                className="mt-2 inline-flex items-center gap-1.5 rounded-[12px] border border-black bg-card-white px-3 py-1 text-xs font-bold text-black hover:bg-paper-cream transition shadow-[1px_1px_0_#000]"
+                className="mt-1 pc-btn pc-btn-subtle text-xs py-1 px-3 h-8"
               >
                 {copied ? <IconCheck size={13} /> : <IconCopy size={13} />}
                 <span>{copied ? "Copied!" : "Copy Pocket ID"}</span>
@@ -215,63 +240,70 @@ export default function DashboardPage() {
           </div>
         </aside>
 
-        {/* Right Column: Circles, Next Feature, and Ledger */}
+        {/* Right Column: Actions, Next Feature, and Ledger */}
         <div className="md:col-span-2 space-y-6">
-          {/* Friends Quick Link Card */}
-          <article className="pc-sticker-card pc-sticker-cyan flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-              <span className="pc-kicker bg-card-white text-black mb-2">Step 1</span>
-              <h3 className="font-display text-2xl font-black uppercase tracking-tight text-black">
-                BUILD YOUR CIRCLE
+          {/* Step 1: Friends Quick Link Card */}
+          <article className="rounded-[24px] border border-sand bg-paper-white p-6 sm:p-7 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="space-y-1">
+              <span className="pc-badge pc-badge-blue text-xs">Step 1</span>
+              <h3 className="text-xl font-bold tracking-tight text-ink-black">
+                Connect with your friends
               </h3>
-              <p className="text-sm font-medium text-black mt-1">
-                Link with your friends using their 10-digit Pocket ID before creating groups.
+              <p className="text-sm font-normal text-steel max-w-md">
+                Search for friends using their 10-digit numeric Pocket ID or username to prepare your
+                expense circle.
               </p>
             </div>
-            <Link to="/friends" className="pc-btn pc-btn-primary shrink-0">
+            <Link to="/friends" className="pc-btn pc-btn-primary shrink-0 text-sm">
               <span>Friends list</span>
               <IconArrowUpRight size={16} />
             </Link>
           </article>
 
-          {/* Groups Coming Soon Card (Milestone F8) */}
-          <article className="pc-sticker-card pc-sticker-pink p-6 text-black space-y-3">
+          {/* Groups Milestone (F8) */}
+          <article className="rounded-[24px] border border-sand bg-parchment p-6 sm:p-7 space-y-3">
             <div className="flex items-center justify-between">
-              <span className="pc-kicker bg-card-white text-black">Next Milestone · F8</span>
-              <span className="font-mono text-xs font-black uppercase tracking-wider">In Progress</span>
+              <span className="pc-badge pc-badge-soft bg-paper-white text-xs">
+                Milestone F8 · Next Feature
+              </span>
+              <span className="font-mono text-xs font-semibold uppercase tracking-wider text-steel">
+                In Development
+              </span>
             </div>
-            <h3 className="font-display text-2xl sm:text-3xl font-black uppercase tracking-tight text-black">
-              GROUP LEDGERS COMING NEXT
+            <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-ink-black">
+              Group ledgers coming soon
             </h3>
-            <p className="text-sm font-medium text-black leading-relaxed">
-              Once you and your friends are linked, you'll be able to create shared circles for trips, room expenses, and dinners with multi-payer splits and zero-remainder decimal math.
+            <p className="text-sm text-steel leading-relaxed">
+              Once your friend circle is linked, you&apos;ll be able to launch dedicated group
+              ledgers for vacations, shared rentals, and dinners with multi-payer splits and exact
+              decimal resolution.
             </p>
-            <div className="pt-2">
+            <div className="pt-1">
               <Link to="/friends" className="pc-btn pc-btn-white text-xs">
-                Add friends now so you're ready
+                Add friends now to be ready
               </Link>
             </div>
           </article>
 
-          {/* Activity Ledger Mock */}
-          <section className="pc-panel p-6 space-y-4">
-            <div className="flex items-center justify-between border-b border-[#555] pb-3">
-              <div className="flex items-center gap-2">
-                <IconReceipt size={18} />
-                <h3 className="font-display text-xl font-black uppercase tracking-tight text-white">
-                  RECENT LEDGER ACTIVITY
+          {/* Activity Ledger Audit Log Placeholder */}
+          <section className="rounded-[24px] border border-sand bg-paper-white p-6 sm:p-7 space-y-4">
+            <div className="flex items-center justify-between border-b border-sand pb-4">
+              <div className="flex items-center gap-2.5">
+                <IconReceipt size={18} className="text-electric-blue" />
+                <h3 className="text-lg font-bold tracking-tight text-ink-black">
+                  Recent Ledger Activity
                 </h3>
               </div>
-              <span className="font-mono text-xs text-[#aaa]">AUDIT LOGS</span>
+              <span className="font-mono text-xs text-steel">Audit Log</span>
             </div>
 
-            <div className="rounded-[16px] border border-black bg-card-white p-6 text-center text-black space-y-2 shadow-[2px_2px_0_#000]">
-              <span className="inline-block rounded-full border border-black bg-paper-cream p-3">
-                <IconReceipt size={24} className="text-hairline-smoke" />
+            <div className="rounded-[18px] bg-parchment p-8 text-center space-y-2">
+              <span className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-paper-white text-steel">
+                <IconReceipt size={22} />
               </span>
-              <p className="font-bold text-base text-black">No expenses recorded yet.</p>
-              <p className="text-xs text-hairline-smoke max-w-sm mx-auto">
-                Once group ledgers are initialized, every balance-affecting action will appear here with an immutable timestamp.
+              <p className="font-semibold text-sm text-ink-black">No transactions recorded yet.</p>
+              <p className="text-xs text-steel max-w-sm mx-auto">
+                Every balance change will be logged here with immutable timestamps and payer breakdown.
               </p>
             </div>
           </section>
