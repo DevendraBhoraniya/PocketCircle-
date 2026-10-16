@@ -46,18 +46,25 @@ cp Backend/.env.example Backend/.env
 cp Frontend/.env.example Frontend/.env
 ```
 
-### 2. Backend Setup
+### 2. Single-Command Dev Environment (Recommended)
+
+From the project root:
 
 ```bash
-cd Backend
-python -m venv .venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-pip install -e .
-alembic upgrade head
-uvicorn main:app --reload --port 8000
+npm run dev
 ```
 
-### 3. Frontend Setup
+Or on Windows PowerShell / Command Prompt:
+
+```powershell
+.\dev.ps1
+```
+
+This concurrently launches:
+- **FastAPI Backend:** http://localhost:8000 (auto-reloading on port 8000)
+- **Vite Frontend:** http://localhost:5173 (HMR on port 5173)
+
+### 3. Running Services Individually (Optional)
 
 ```bash
 cd Frontend
