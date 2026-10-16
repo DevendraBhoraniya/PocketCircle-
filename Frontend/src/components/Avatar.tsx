@@ -1,19 +1,24 @@
 import { useMemo, useState } from 'react';
 
 const COLORS = [
-  'bg-riot-pink', 'bg-voltage-cyan', 'bg-toxic-lime', 'bg-sticker-khaki'
+  'bg-riot-pink text-black',
+  'bg-voltage-cyan text-black',
+  'bg-toxic-lime text-black',
+  'bg-sticker-khaki text-black'
 ];
 
 interface AvatarProps {
   name: string;
   url?: string | null;
-  size?: 'sm' | 'md' | 'lg' | 'xl';
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  className?: string;
 }
 
-export default function Avatar({ name, url, size = 'md' }: AvatarProps) {
+export default function Avatar({ name, url, size = 'md', className = '' }: AvatarProps) {
   const [imageFailed, setImageFailed] = useState(false);
 
   const sizeClasses = {
+    xs: 'w-6 h-6 text-[10px]',
     sm: 'w-8 h-8 text-xs',
     md: 'w-10 h-10 text-sm',
     lg: 'w-16 h-16 text-xl',
@@ -29,8 +34,8 @@ export default function Avatar({ name, url, size = 'md' }: AvatarProps) {
     return name.slice(0, 2).toUpperCase();
   }, [name]);
 
-  const bgColor = useMemo(() => {
-    if (!name) return 'bg-placeholder-ash';
+  const colorClass = useMemo(() => {
+    if (!name) return 'bg-placeholder-ash text-white';
     let hash = 0;
     for (let i = 0; i < name.length; i++) {
       hash = name.charCodeAt(i) + ((hash << 5) - hash);
@@ -41,17 +46,21 @@ export default function Avatar({ name, url, size = 'md' }: AvatarProps) {
 
   if (url && !imageFailed) {
     return (
-      <img 
-        src={url} 
-        alt={name} 
-        className={`${sizeClasses[size]} rounded-full border border-black object-cover bg-card-white`}
+      <img
+        src={url}
+        alt={name}
+        className={`${sizeClasses[size]} shrink-0 rounded-full border border-black object-cover bg-card-white shadow-[1px_1px_0_#000] ${className}`}
         onError={() => setImageFailed(true)}
       />
     );
   }
 
   return (
-    <div className={`${sizeClasses[size]} ${bgColor} rounded-full border border-black text-black flex items-center justify-center font-bold select-none`}>
+    <div
+      className={`${sizeClasses[size]} ${colorClass} shrink-0 rounded-full border border-black flex items-center justify-center font-bold tracking-tight select-none shadow-[1px_1px_0_#000] ${className}`}
+      aria-label={name}
+      title={name}
+    >
       {initials}
     </div>
   );
