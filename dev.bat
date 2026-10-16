@@ -1,0 +1,3 @@
+@echo off
+echo Launching PocketCircle (FastAPI Backend + React Frontend)...
+npm run dev
