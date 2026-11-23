@@ -1,46 +1,71 @@
 @import "tailwindcss";
 
 :root {
-  /* Colors */
-  --color-electric-blue: #5196fe;
-  --color-ember-orange: #f9754e;
-  --color-ink-black: #1b1d20;
-  --color-midnight: #101828;
-  --color-paper-white: #ffffff;
-  --color-parchment: #f2f1ec;
-  --color-sand: #e1dfd8;
-  --color-graphite: #27272a;
-  --color-steel: #6e6e6e;
-  --color-ash: #797876;
-  --color-fog: #a3a3a3;
+  /* Colors from DESIGN.md (Cal.com System) */
+  --color-primary: #111111;
+  --color-primary-active: #242424;
+  --color-primary-disabled: #e5e7eb;
+  --color-ink: #111111;
+  --color-body: #374151;
+  --color-muted: #6b7280;
+  --color-muted-soft: #898989;
+  --color-hairline: #e5e7eb;
+  --color-hairline-soft: #f3f4f6;
+  --color-canvas: #ffffff;
+  --color-surface-soft: #f8f9fa;
+  --color-surface-card: #f5f5f5;
+  --color-surface-strong: #e5e7eb;
+  --color-surface-dark: #101010;
+  --color-surface-dark-elevated: #1a1a1a;
+  --color-on-primary: #ffffff;
+  --color-on-dark: #ffffff;
+  --color-on-dark-soft: #a1a1aa;
+  --color-brand-accent: #3b82f6;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
 
-  /* Typography — Font Families */
+  /* Semantic & backward compatibility mapping */
+  --color-electric-blue: #111111;
+  --color-ember-orange: #f97316;
+  --color-ink-black: var(--color-ink);
+  --color-midnight: var(--color-surface-dark);
+  --color-paper-white: var(--color-canvas);
+  --color-parchment: var(--color-surface-card);
+  --color-sand: var(--color-hairline);
+  --color-steel: var(--color-muted);
+  --color-graphite: #1f2937;
+  --color-ash: var(--color-body);
+  --color-fog: var(--color-surface-strong);
+
+  /* Typography — Font Families (Cal Sans for Display & Headings, Inter for UI) */
+  --font-cal-sans: 'Cal Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-inter: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-gambetta: 'Gambetta', 'Newsreader', 'Source Serif 4', Georgia, serif;
+  --font-gambetta: 'Newsreader', Georgia, serif;
   --font-system-ui: 'system-ui', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
   /* Typography — Scale */
-  --text-caption: 14px;
-  --leading-caption: 1.5;
-  --tracking-caption: -0.14px;
-  --text-body-sm: 16px;
+  --text-caption: 13px;
+  --leading-caption: 1.4;
+  --tracking-caption: 0;
+  --text-body-sm: 14px;
   --leading-body-sm: 1.5;
-  --tracking-body-sm: -0.32px;
-  --text-body: 18px;
-  --leading-body: 1.43;
-  --tracking-body: -0.36px;
-  --text-subheading: 20px;
-  --leading-subheading: 1.42;
-  --tracking-subheading: -0.46px;
-  --text-heading-sm: 32px;
-  --leading-heading-sm: 1.16;
-  --tracking-heading-sm: -0.96px;
+  --tracking-body-sm: 0;
+  --text-body: 16px;
+  --leading-body: 1.5;
+  --tracking-body: 0;
+  --text-subheading: 18px;
+  --leading-subheading: 1.4;
+  --tracking-subheading: 0;
+  --text-heading-sm: 28px;
+  --leading-heading-sm: 1.25;
+  --tracking-heading-sm: 0;
   --text-heading: 48px;
-  --leading-heading: 1.13;
-  --tracking-heading: -2.88px;
+  --leading-heading: 1.15;
+  --tracking-heading: -0.01em;
   --text-display: 64px;
   --leading-display: 1.05;
-  --tracking-display: -6.4px;
+  --tracking-display: -0.02em;
 
   /* Typography — Weights */
   --font-weight-regular: 400;
@@ -48,7 +73,7 @@
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
 
-  /* Spacing Scale */
+  /* Spacing Scale (4px base) */
   --spacing-unit: 4px;
   --spacing-4: 4px;
   --spacing-8: 8px;
@@ -65,71 +90,79 @@
 
   /* Layout */
   --page-max-width: 1200px;
-  --section-gap: 72px;
-  --card-padding: 24px;
-  --element-gap: 12px;
+  --section-gap: 96px;
+  --card-padding: 32px;
+  --element-gap: 16px;
 
-  /* Border Radius */
-  --radius-lg: 8px;
-  --radius-xl: 12.8px;
-  --radius-2xl: 20px;
-  --radius-3xl: 24px;
+  /* Border Radius from DESIGN.md */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-pill: 9999px;
   --radius-full: 9999px;
 
-  /* Named Radii */
-  --radius-cards: 24px;
-  --radius-badges: 12.8px;
-  --radius-inputs: 12.8px;
-  --radius-buttons: 9999px;
+  /* Component Radii from DESIGN.md */
+  --radius-cards: 12px;
+  --radius-badges: 9999px;
+  --radius-inputs: 8px;
+  --radius-buttons: 8px;
 
   /* Shadows */
-  --shadow-md: rgba(0, 0, 0, 0.08) 0px 2px 10px 0px;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
 
   /* Surfaces */
   --surface-page-canvas: #ffffff;
-  --surface-soft-card: #f2f1ec;
+  --surface-soft-card: #f5f5f5;
   --surface-card: #ffffff;
-  --surface-brand-surface: #5196fe;
-  --surface-dark-surface: #1b1d20;
+  --surface-brand-surface: #111111;
+  --surface-dark-surface: #101010;
 }
 
 @theme {
   /* Colors */
-  --color-electric-blue: #5196fe;
-  --color-ember-orange: #f9754e;
-  --color-ink-black: #1b1d20;
-  --color-midnight: #101828;
+  --color-primary: #111111;
+  --color-primary-active: #242424;
+  --color-electric-blue: #111111;
+  --color-ember-orange: #ea580c;
+  --color-ink-black: #111111;
+  --color-midnight: #101010;
   --color-paper-white: #ffffff;
-  --color-parchment: #f2f1ec;
-  --color-sand: #e1dfd8;
-  --color-graphite: #27272a;
-  --color-steel: #6e6e6e;
-  --color-ash: #797876;
-  --color-fog: #a3a3a3;
+  --color-parchment: #f5f5f5;
+  --color-sand: #e5e7eb;
+  --color-graphite: #1f2937;
+  --color-steel: #6b7280;
+  --color-ash: #374151;
+  --color-fog: #e5e7eb;
+  --color-brand-accent: #3b82f6;
 
   /* Typography */
+  --font-cal-sans: 'Cal Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-inter: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-gambetta: 'Gambetta', 'Newsreader', 'Source Serif 4', Georgia, serif;
+  --font-gambetta: 'Newsreader', Georgia, serif;
   --font-system-ui: 'system-ui', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
   /* Typography — Scale */
-  --text-caption: 14px;
-  --text-body-sm: 16px;
-  --text-body: 18px;
-  --text-subheading: 20px;
-  --text-heading-sm: 32px;
+  --text-caption: 13px;
+  --text-body-sm: 14px;
+  --text-body: 16px;
+  --text-subheading: 18px;
+  --text-heading-sm: 28px;
   --text-heading: 48px;
   --text-display: 64px;
 
   /* Border Radius */
-  --radius-cards: 24px;
-  --radius-badges: 12.8px;
-  --radius-inputs: 12.8px;
-  --radius-buttons: 9999px;
+  --radius-cards: 12px;
+  --radius-badges: 9999px;
+  --radius-inputs: 8px;
+  --radius-buttons: 8px;
   --radius-full: 9999px;
 
   /* Shadow */
-  --shadow-md: rgba(0, 0, 0, 0.08) 0px 2px 10px 0px;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 /* Base resets & document settings */
@@ -149,6 +182,18 @@ body {
   color: var(--color-ink-black);
   font-size: var(--text-body-sm);
   line-height: 1.5;
+}
+
+/* Accessible High-Contrast Focus Rings */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[role="button"]:focus-visible,
+[tabindex="0"]:focus-visible {
+  outline: 2px solid var(--color-electric-blue);
+  outline-offset: 2px;
 }
 
 /* Shell Layout */
@@ -208,9 +253,10 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
+  font-family: var(--font-cal-sans);
   font-size: 20px;
   font-weight: 600;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.01em;
   color: var(--color-ink-black);
   text-decoration: none;
 }
@@ -229,23 +275,24 @@ body {
   gap: 10px;
 }
 
-/* Button System (All 9999px Pill-Shaped) */
+/* Button System from DESIGN.md (Cal.com Standard: 8px rounded, 40px height, #111111 primary) */
 .pc-btn {
   display: inline-flex;
-  min-height: 42px;
+  height: 40px;
+  min-height: 40px;
   align-items: center;
   justify-content: center;
   gap: 8px;
   border-radius: var(--radius-buttons);
-  padding: 0 20px;
+  padding: 0 18px;
   font-family: var(--font-inter);
-  font-size: 15px;
-  font-weight: 500;
+  font-size: 14px;
+  font-weight: 600;
   letter-spacing: -0.01em;
   line-height: 1;
   text-decoration: none;
   cursor: pointer;
-  transition: all 140ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 120ms ease;
   user-select: none;
   border: 1px solid transparent;
 }
@@ -255,92 +302,81 @@ body {
   cursor: not-allowed;
 }
 
-/* Primary Pill Button: Electric Blue fill, White text */
+/* Primary Button: #111111 (near black), text white */
 .pc-btn-primary {
-  background-color: var(--color-electric-blue);
-  color: var(--color-paper-white);
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
 }
 .pc-btn-primary:hover:not(:disabled) {
-  background-color: #3f83eb;
-  transform: translateY(-1px);
+  background-color: var(--color-primary-active);
 }
 .pc-btn-primary:active:not(:disabled) {
-  transform: translateY(0);
+  background-color: #000000;
 }
 
-/* Ember CTA Button: High-stakes conversion accent (Scarcity: at most once per page) */
+/* Secondary Button: Canvas white fill, hairline 1px border, ink text */
+.pc-btn-secondary,
+.pc-btn-white,
+.pc-btn-ghost {
+  background-color: var(--color-canvas);
+  border: 1px solid var(--color-hairline);
+  color: var(--color-ink);
+}
+.pc-btn-secondary:hover:not(:disabled),
+.pc-btn-white:hover:not(:disabled),
+.pc-btn-ghost:hover:not(:disabled) {
+  background-color: var(--color-surface-soft);
+  border-color: #d1d5db;
+}
+
+/* Subtle Button: Surface card gray fill */
+.pc-btn-subtle {
+  background-color: var(--color-surface-card);
+  border: 1px solid var(--color-hairline);
+  color: var(--color-ink);
+}
+.pc-btn-subtle:hover:not(:disabled) {
+  background-color: var(--color-surface-strong);
+}
+
+/* Ember / Accent Button */
 .pc-btn-ember {
   background-color: var(--color-ember-orange);
   color: var(--color-paper-white);
 }
 .pc-btn-ember:hover:not(:disabled) {
-  background-color: #e5663f;
-  transform: translateY(-1px);
-}
-.pc-btn-ember:active:not(:disabled) {
-  transform: translateY(0);
+  background-color: #c2410c;
 }
 
-/* Ghost Pill Button: Transparent fill, Ink Black 1px border */
-.pc-btn-ghost {
-  background-color: transparent;
-  border: 1px solid var(--color-ink-black);
-  color: var(--color-ink-black);
-}
-.pc-btn-ghost:hover:not(:disabled) {
-  background-color: var(--color-parchment);
-}
-
-/* Subtle Pill Button: Parchment fill, Sand border */
-.pc-btn-subtle {
-  background-color: var(--color-parchment);
-  border: 1px solid var(--color-sand);
-  color: var(--color-ink-black);
-}
-.pc-btn-subtle:hover:not(:disabled) {
-  background-color: #e8e6df;
-}
-
-/* White Pill Button */
-.pc-btn-white {
-  background-color: var(--color-paper-white);
-  border: 1px solid var(--color-sand);
-  color: var(--color-ink-black);
-}
-.pc-btn-white:hover:not(:disabled) {
-  border-color: var(--color-fog);
-  background-color: #faf9f6;
-}
-
-/* Dark Pill Button */
+/* Dark Button */
 .pc-btn-dark {
-  background-color: var(--color-ink-black);
-  color: var(--color-paper-white);
+  background-color: var(--color-surface-dark);
+  color: var(--color-on-dark);
 }
 .pc-btn-dark:hover:not(:disabled) {
-  background-color: var(--color-midnight);
+  background-color: #000000;
 }
 
-/* Card System (All 24px Border-Radius) */
+/* Card System from DESIGN.md (12px Border-Radius, Hairline #e5e7eb) */
 .pc-card {
-  background-color: var(--color-paper-white);
+  background-color: var(--color-canvas);
   border-radius: var(--radius-cards);
-  border: 1px solid var(--color-sand);
+  border: 1px solid var(--color-hairline);
   padding: var(--card-padding);
   transition: border-color 140ms ease;
 }
 
 .pc-card-soft {
-  background-color: var(--color-parchment);
+  background-color: var(--color-surface-card);
   border-radius: var(--radius-cards);
   border: 1px solid transparent;
   padding: var(--card-padding);
 }
 
 .pc-card-dark {
-  background-color: var(--color-ink-black);
+  background-color: var(--color-surface-dark);
   border-radius: var(--radius-cards);
-  color: var(--color-paper-white);
+  color: var(--color-on-dark);
   padding: var(--card-padding);
 }
 
@@ -380,64 +416,73 @@ body {
   color: var(--color-electric-blue);
 }
 
-/* Inputs (12.8px radius, White fill, Fog 1px border) */
-.pc-input {
-  width: 100%;
-  min-height: 46px;
-  border: 1px solid var(--color-fog);
-  border-radius: var(--radius-inputs);
-  background-color: var(--color-paper-white);
-  padding: 0 16px;
-  font-family: var(--font-inter);
-  font-size: 16px;
-  font-weight: 400;
-  color: var(--color-ink-black);
-  outline: none;
-  transition: border-color 140ms ease, box-shadow 140ms ease;
+/* Inputs from DESIGN.md (8px radius, 40px height, White fill, 1px Hairline #e5e7eb) */
+@layer components {
+  .pc-input {
+    width: 100%;
+    height: 40px;
+    min-height: 40px;
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-inputs);
+    background-color: var(--color-canvas);
+    padding: 0 14px;
+    font-family: var(--font-inter);
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--color-ink);
+    outline: none;
+    transition: border-color 120ms ease, box-shadow 120ms ease;
+  }
+
+  .pc-input:focus {
+    border-color: var(--color-ink);
+    box-shadow: 0 0 0 1px var(--color-ink);
+  }
+
+  .pc-input::placeholder {
+    color: var(--color-muted);
+  }
 }
 
-.pc-input:focus {
-  border-color: var(--color-electric-blue);
-  box-shadow: 0 0 0 3px rgba(81, 150, 254, 0.18);
+/* Typography Signatures from DESIGN.md */
+.pc-font-cal-sans {
+  font-family: var(--font-cal-sans);
+  font-weight: 600;
+  letter-spacing: normal;
 }
 
-.pc-input::placeholder {
-  color: var(--color-steel);
-}
-
-/* Typography Signatures */
 .pc-display {
-  font-family: var(--font-inter);
-  font-size: clamp(2.5rem, 6vw, 4rem);
-  font-weight: 700;
+  font-family: var(--font-cal-sans);
+  font-size: clamp(2.25rem, 5.5vw, 4rem);
+  font-weight: 600;
   line-height: 1.05;
-  letter-spacing: -0.06em;
-  color: var(--color-ink-black);
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
 }
 
 .pc-serif-flourish {
   font-family: var(--font-gambetta);
   font-style: italic;
   font-weight: 500;
-  letter-spacing: -0.02em;
+  letter-spacing: normal;
 }
 
 .pc-heading-sm {
-  font-family: var(--font-inter);
-  font-size: 32px;
+  font-family: var(--font-cal-sans);
+  font-size: 28px;
   font-weight: 600;
-  line-height: 1.16;
-  letter-spacing: -0.03em;
-  color: var(--color-ink-black);
+  line-height: 1.25;
+  letter-spacing: normal;
+  color: var(--color-ink);
 }
 
 .pc-stat-number {
-  font-family: var(--font-inter);
-  font-size: clamp(2.5rem, 5vw, 3.5rem);
-  font-weight: 700;
+  font-family: var(--font-cal-sans);
+  font-size: clamp(2.25rem, 4.5vw, 3.5rem);
+  font-weight: 600;
   line-height: 1;
-  letter-spacing: -0.06em;
-  color: var(--color-ink-black);
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
 }
 
 /* Feature Icon Tile (Electric Blue 48x48 rounded-square container) */
@@ -508,7 +553,8 @@ body {
   }
 
   .pc-page {
-    padding: var(--spacing-16) var(--spacing-16) var(--spacing-64);
+    /* Extra clearance for fixed mobile bottom navigation */
+    padding: var(--spacing-16) var(--spacing-16) calc(var(--spacing-64) + 36px);
   }
 
   .pc-card,
@@ -518,8 +564,117 @@ body {
   }
 
   .pc-btn {
-    min-height: 38px;
-    padding: 0 16px;
+    /* Ensure minimum 42px touch target on mobile */
+    min-height: 42px;
+    padding: 0 18px;
     font-size: 14px;
+  }
+}
+
+/* Tabular Numerals & High-Precision Alignment for Financial Data */
+.font-tabular {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "cv05" 1;
+}
+
+/* Subtle Tactile Card Elevation */
+.pc-card-elevated {
+  background-color: var(--color-paper-white);
+  border-radius: var(--radius-cards);
+  border: 1px solid var(--color-sand);
+  box-shadow: 0 2px 12px rgba(27, 29, 32, 0.04);
+  transition: all 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pc-card-elevated:hover {
+  border-color: #cac6bc;
+  box-shadow: 0 8px 28px rgba(27, 29, 32, 0.08);
+  transform: translateY(-1px);
+}
+
+/* Ledger Ticket Perforated Styling */
+.pc-ticket {
+  position: relative;
+  background: var(--color-paper-white);
+  border: 1px solid var(--color-sand);
+  border-radius: 24px;
+}
+
+.pc-ticket::before,
+.pc-ticket::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 9999px;
+  background: var(--surface-page-canvas);
+  border: 1px solid var(--color-sand);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.pc-ticket::before {
+  left: -11px;
+}
+
+.pc-ticket::after {
+  right: -11px;
+}
+
+/* Indeterminate Loading Progress Bar Animation */
+@keyframes pc-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(50%);
+  }
+  100% {
+    transform: translateX(220%);
+  }
+}
+
+.pc-shimmer-bar {
+  animation: pc-shimmer 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  will-change: transform;
+}
+
+/* Skeleton Shimmer Wave Animation */
+@keyframes pc-skeleton-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.pc-skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(225, 223, 216, 0.45) 0%,
+    rgba(225, 223, 216, 0.9) 50%,
+    rgba(225, 223, 216, 0.45) 100%
+  );
+  background-size: 200% 100%;
+  animation: pc-skeleton-shimmer 1.8s ease-in-out infinite;
+}
+
+/* Accessible reduced-motion handling */
+@media (prefers-reduced-motion: reduce) {
+  .pc-skeleton-shimmer,
+  .pc-shimmer-bar {
+    animation: none !important;
+    background: rgba(225, 223, 216, 0.7) !important;
+  }
+}
+
+/* Toast Countdown Progress Bar */
+@keyframes pc-toast-progress {
+  0% {
+    width: 100%;
+  }
+  100% {
+    width: 0%;
   }
 }

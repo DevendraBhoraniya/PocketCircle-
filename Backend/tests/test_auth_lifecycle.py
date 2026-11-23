@@ -65,3 +65,64 @@ async def test_logout_clears_cookies(client: AsyncClient):
     set_cookies = response.headers.get_list("set-cookie")
     assert any("access_token=" in c for c in set_cookies)
     assert any("refresh_token=" in c for c in set_cookies)
+
+
+@pytest.mark.asyncio
+async def test_auth_ok_probe(client: AsyncClient):
+    response = await client.get("/auth/ok")
+    assert response.status_code == 200
+    assert response.json() == {"status": "ok"}
+
+
+@pytest.mark.asyncio
+async def test_logout_all_revokes_all_sessions(client: AsyncClient, db_session: AsyncSession):
+    from datetime import datetime, timedelta, timezone
+    from models.refresh_token import RefreshToken
+    from sqlalchemy import select
+
+    # Create test user
+    pocket_id = await generate_unique_pocket_id(db_session)
+    user = User(
+        id=uuid.uuid4(),
+        email=f"multisession_{uuid.uuid4().hex[:8]}@example.com",
+        name="Multi Session User",
+        username=f"multi_{uuid.uuid4().hex[:6]}",
+        pocket_id=pocket_id,
+        is_email_verified=True,
+    )
+    db_session.add(user)
+    await db_session.flush()
+
+    # Create 3 active refresh tokens simulating 3 devices/sessions
+    tokens = []
+    for _ in range(3):
+        rt = RefreshToken(
+            user_id=user.id,
+            token_hash=hash_token(generate_refresh_token()),
+            expires_at=datetime.now(timezone.utc) + timedelta(days=30),
+        )
+        db_session.add(rt)
+        tokens.append(rt)
+    await db_session.commit()
+
+    # Call /auth/logout-all with valid access token
+    access_token = create_access_token({"sub": str(user.id)})
+    headers = {
+        "Origin": "http://localhost:5173",
+        "Cookie": f"access_token={access_token}",
+    }
+    response = await client.post("/auth/logout-all", headers=headers)
+    assert response.status_code == 204
+
+    # Verify all 3 tokens for this user are now revoked
+    res = await db_session.execute(
+        select(RefreshToken).where(RefreshToken.user_id == user.id)
+    )
+    saved_tokens = res.scalars().all()
+    assert len(saved_tokens) == 3
+    assert all(t.revoked_at is not None for t in saved_tokens)
+
+    # Check cookies cleared
+    set_cookies = response.headers.get_list("set-cookie")
+    assert any("access_token=" in c for c in set_cookies)
+    assert any("refresh_token=" in c for c in set_cookies)

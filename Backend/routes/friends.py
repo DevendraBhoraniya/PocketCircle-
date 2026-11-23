@@ -2,6 +2,7 @@ from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Response, status
 from sqlalchemy import and_, or_, select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.database import get_db
@@ -51,7 +52,7 @@ async def create_friend_request(
     current_user: User = Depends(get_current_user),
 ):
     if data.friend_id == current_user.id:
-        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="You cannot add yourself as a friend")
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_CONTENT, detail="You cannot add yourself as a friend")
 
     target_result = await db.execute(
         select(User).where(User.id == data.friend_id).where(User.deleted_at.is_(None))
@@ -80,12 +81,30 @@ async def create_friend_request(
 
     friendship = Friendship(user_id=current_user.id, friend_id=target.id, status="pending")
     db.add(friendship)
-    await db.commit()
-    await db.refresh(friendship)
+
+    from services.notification_service import NotificationService
+    await NotificationService.create_notification(
+        db=db,
+        recipient_id=target.id,
+        actor_id=current_user.id,
+        event_type="FRIEND_REQUEST_RECEIVED",
+        payload=f"{current_user.name} sent you a friend request",
+    )
+
+    try:
+        await db.commit()
+        await db.refresh(friendship)
+    except IntegrityError:
+        await db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="A friend request is already pending",
+        )
     return {
         "message": "Friend request sent",
         "request": request_payload(friendship, target),
     }
+
 
 
 @router.get("/requests", response_model=FriendRequestsResponse)
@@ -134,11 +153,23 @@ async def accept_friend_request(
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="You cannot accept this friend request")
 
     friendship.status = "accepted"
-    await db.commit()
-    await db.refresh(friendship)
+
     requester_result = await db.execute(select(User).where(User.id == friendship.user_id))
     requester = requester_result.scalar_one()
+
+    from services.notification_service import NotificationService
+    await NotificationService.create_notification(
+        db=db,
+        recipient_id=requester.id,
+        actor_id=current_user.id,
+        event_type="FRIEND_REQUEST_ACCEPTED",
+        payload=f"{current_user.name} accepted your friend request",
+    )
+
+    await db.commit()
+    await db.refresh(friendship)
     return {"message": "Friend request accepted", "request": request_payload(friendship, requester)}
+
 
 
 @router.post("/requests/{friendship_id}/reject", response_model=FriendRequestActionResponse)

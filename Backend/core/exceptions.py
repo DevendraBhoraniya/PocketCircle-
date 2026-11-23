@@ -3,6 +3,8 @@ from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
+from core.logging import logger
+
 
 class AppException(Exception):
     def __init__(
@@ -70,7 +72,7 @@ def register_exception_handlers(app: FastAPI) -> None:
             status.HTTP_403_FORBIDDEN: "FORBIDDEN",
             status.HTTP_404_NOT_FOUND: "NOT_FOUND",
             status.HTTP_409_CONFLICT: "CONFLICT",
-            status.HTTP_422_UNPROCESSABLE_ENTITY: "UNPROCESSABLE_ENTITY",
+            status.HTTP_422_UNPROCESSABLE_CONTENT: "UNPROCESSABLE_ENTITY",
             status.HTTP_429_TOO_MANY_REQUESTS: "RATE_LIMITED",
         }
         code = code_map.get(exc.status_code, "HTTP_ERROR")
@@ -88,7 +90,7 @@ def register_exception_handlers(app: FastAPI) -> None:
         request_id = getattr(request.state, "request_id", None)
         errors = exc.errors()
         return build_error_response(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
             code="VALIDATION_ERROR",
             message="Request validation failed",
             details=errors,
@@ -98,6 +100,10 @@ def register_exception_handlers(app: FastAPI) -> None:
     @app.exception_handler(Exception)
     async def unhandled_exception_handler(request: Request, exc: Exception) -> JSONResponse:
         request_id = getattr(request.state, "request_id", None)
+        logger.error(
+            f"[{request_id}] Unhandled server exception: {exc}",
+            exc_info=exc,
+        )
         return build_error_response(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             code="INTERNAL_SERVER_ERROR",

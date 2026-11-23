@@ -1,0 +1,27 @@
+name: Render Keep-Alive
+
+on:
+  schedule:
+    # Runs every 14 minutes to prevent Render free-tier instances from sleeping (15-minute inactivity limit)
+    - cron: '*/14 * * * *'
+  workflow_dispatch:
+
+jobs:
+  ping:
+    name: Keep Render Service Awake
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping PocketCircle Health Check
+        run: |
+          APP_URL="${{ secrets.RENDER_APP_URL }}"
+          if [ -z "$APP_URL" ]; then
+            APP_URL="https://pocketcircle.onrender.com"
+          fi
+          # Ensure URL has scheme
+          if [[ ! "$APP_URL" =~ ^https?:// ]]; then
+            APP_URL="https://$APP_URL"
+          fi
+          ENDPOINT="${APP_URL%/}/health"
+          echo "Pinging keep-alive endpoint: $ENDPOINT"
+          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 45 "$ENDPOINT" || echo "000")
+          echo "Response code: $HTTP_CODE"

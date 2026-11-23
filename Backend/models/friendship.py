@@ -4,10 +4,12 @@ from datetime import datetime, timezone
 from sqlalchemy import (
     CheckConstraint,
     Column,
-    String,
     DateTime,
     ForeignKey,
+    Index,
+    String,
     UniqueConstraint,
+    func,
 )
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
@@ -78,5 +80,11 @@ class Friendship(Base):
             "user_id",
             "friend_id",
             name="unique_friendship",
+        ),
+        Index(
+            "unique_friendship_pair",
+            func.least(user_id, friend_id),
+            func.greatest(user_id, friend_id),
+            unique=True,
         ),
     )

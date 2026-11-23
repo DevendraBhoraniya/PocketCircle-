@@ -29,6 +29,9 @@ jobs:
       - name: TypeScript typecheck
         run: npx tsc -b
 
+      - name: Lint check
+        run: npm run lint
+
       - name: Build frontend
         run: npm run build
 
@@ -65,4 +68,5 @@ jobs:
           GOOGLE_CLIENT_ID: test-client-id.apps.googleusercontent.com
           COOKIE_SECURE: "False"
           COOKIE_SAMESITE: lax
-        run: pytest
+        run: pytest tests -o pythonpath=.
+

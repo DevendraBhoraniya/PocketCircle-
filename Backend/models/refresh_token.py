@@ -20,10 +20,13 @@ class RefreshToken(Base):
         UUID(as_uuid=True),
         ForeignKey("users.id", ondelete="CASCADE"),
         nullable=False,
+        index=True,
     )
 
     token_hash = Column(
         String(255),
+        unique=True,
+        index=True,
         nullable=False,
     )
 

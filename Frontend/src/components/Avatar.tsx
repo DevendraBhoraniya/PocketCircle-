@@ -50,6 +50,8 @@ export default function Avatar({ name, url, size = 'md', className = '' }: Avata
       <img
         src={url}
         alt={name}
+        loading="lazy"
+        decoding="async"
         className={`${sizeClasses[size]} shrink-0 rounded-full border border-sand object-cover bg-paper-white ${className}`}
         onError={() => setImageFailed(true)}
       />
@@ -58,7 +60,7 @@ export default function Avatar({ name, url, size = 'md', className = '' }: Avata
 
   return (
     <div
-      className={`${sizeClasses[size]} ${colorClass} shrink-0 rounded-full flex items-center justify-center font-medium tracking-tight select-none ${className}`}
+      className={`${sizeClasses[size]} ${colorClass} shrink-0 rounded-full flex items-center justify-center font-medium select-none ${className}`}
       aria-label={name}
       title={name}
     >

@@ -27,6 +27,7 @@ async def test_request_id_and_security_headers(client: AsyncClient):
     assert response.headers["x-frame-options"] == "DENY"
     assert response.headers["x-xss-protection"] == "1; mode=block"
     assert response.headers["referrer-policy"] == "strict-origin-when-cross-origin"
+    assert "content-security-policy" in response.headers
 
 
 @pytest.mark.asyncio

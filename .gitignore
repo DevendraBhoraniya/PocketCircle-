@@ -62,3 +62,16 @@ Thumbs.db
 *.sublime-project
 *.swp
 *.swo
+
+# Local SQLite databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Test artifacts and tooling
+.playwright-cli/
+.agents/
+skills-lock.json
+*.log
+
+

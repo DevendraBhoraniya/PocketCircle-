@@ -7,22 +7,35 @@ requires-python = ">=3.12"
 dependencies = [
     "alembic>=1.19.1",
     "asyncpg>=0.31.0",
+    "aiosqlite>=0.22.1",
     "email-validator>=2.3.0",
     "fastapi>=0.141.1",
     "google-auth>=2.56.2",
-    "psycopg2-binary>=2.9.12",
     "pydantic-settings>=2.14.2",
     "python-dotenv>=1.2.2",
     "python-jose[cryptography]>=3.5.0",
-    "requests>=2.34.2",
-    "sqlalchemy>=2.0.51",
+    "sqlalchemy[asyncio]>=2.0.51",
     "uvicorn[standard]>=0.52.0",
+    "httpx>=0.28.1",
+    "greenlet>=3.0.0",
+    "resend>=2.50.0",
 ]
 
 [dependency-groups]
 dev = [
-    "aiosqlite>=0.22.1",
     "httpx>=0.28.1",
     "pytest>=9.1.1",
     "pytest-asyncio>=1.4.0",
 ]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+select = ["E", "F", "I", "B"]
+ignore = ["B008"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+asyncio_mode = "auto"
+
+

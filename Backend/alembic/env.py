@@ -13,6 +13,12 @@ from core.database import Base
 from models.user import User
 from models.refresh_token import RefreshToken
 from models.friendship import Friendship
+from models.group import Group, GroupMember
+from models.expense import Expense, ExpensePayer, ExpenseParticipant
+from models.settlement import Settlement
+from models.audit_event import AuditEvent
+from models.notification import Notification
+from models.email_otp import EmailOTP
 
 
 # Alembic Config object

@@ -1,0 +1,39 @@
+services:
+  # ==============================================================================
+  # PocketCircle: Unified Single-Container Full-Stack Web Service (Render Free Tier)
+  # Serves compiled React frontend static assets and FastAPI backend on one domain.
+  # ==============================================================================
+  - type: web
+    name: pocketcircle
+    runtime: docker
+    dockerContext: .
+    dockerfilePath: ./Dockerfile
+    plan: free
+    region: oregon
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: DATABASE_URL
+        sync: false # External Neon PostgreSQL asyncpg connection URL
+      - key: JWT_SECRET
+        generateValue: true # Render auto-generates a secure 256-bit cryptographically random secret
+      - key: JWT_ALGORITHM
+        value: HS256
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: "30"
+      - key: REFRESH_TOKEN_EXPIRE_DAYS
+        value: "30"
+      - key: COOKIE_SECURE
+        value: "True"
+      - key: COOKIE_SAMESITE
+        value: lax
+      - key: EMAIL_PROVIDER
+        value: resend
+      - key: RESEND_API_KEY
+        sync: false # Set your Resend API Key in Render dashboard
+      - key: RESEND_FROM_EMAIL
+        value: PocketCircle <onboarding@resend.dev>
+      - key: GOOGLE_CLIENT_ID
+        sync: false # Set Google OAuth 2.0 Web Client ID in Render dashboard

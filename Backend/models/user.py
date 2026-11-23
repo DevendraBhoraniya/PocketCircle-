@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime, timezone
 
-from sqlalchemy import CheckConstraint, Column, DateTime, String
+from sqlalchemy import Boolean, CheckConstraint, Column, DateTime, String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 
@@ -20,6 +20,17 @@ class User(Base):
     google_sub = Column(
         String(255),
         unique=True,
+        nullable=True,
+    )
+
+    password_hash = Column(
+        String(255),
+        nullable=True,
+    )
+
+    is_email_verified = Column(
+        Boolean,
+        default=False,
         nullable=False,
     )
 
@@ -82,6 +93,48 @@ class User(Base):
         back_populates="friend",
     )
 
+    # Groups owned by this user
+    owned_groups = relationship(
+        "Group",
+        foreign_keys="[Group.owner_id]",
+        back_populates="owner",
+    )
+
+    # Group memberships
+    group_memberships = relationship(
+        "GroupMember",
+        foreign_keys="[GroupMember.user_id]",
+        back_populates="user",
+    )
+
+    # Expenses created by this user
+    created_expenses = relationship(
+        "Expense",
+        foreign_keys="[Expense.creator_id]",
+        back_populates="creator",
+    )
+
+    # Settlements where user is payer
+    settlements_paid = relationship(
+        "Settlement",
+        foreign_keys="[Settlement.payer_id]",
+        back_populates="payer",
+    )
+
+    # Settlements where user is payee
+    settlements_received = relationship(
+        "Settlement",
+        foreign_keys="[Settlement.payee_id]",
+        back_populates="payee",
+    )
+
+    # In-app notifications received by this user
+    notifications_received = relationship(
+        "Notification",
+        foreign_keys="[Notification.recipient_id]",
+        back_populates="recipient",
+    )
+
     __table_args__ = (
         CheckConstraint(
             "pocket_id ~ '^[0-9]{10}$'",
@@ -89,5 +142,13 @@ class User(Base):
         ),
     )
 
-# Import Friendship here to ensure it's registered in SQLAlchemy's declarative registry
+# Import models here to ensure they are registered in SQLAlchemy's declarative registry
 from models.friendship import Friendship
+from models.group import Group, GroupMember
+from models.expense import Expense, ExpensePayer, ExpenseParticipant
+from models.settlement import Settlement
+from models.audit_event import AuditEvent
+from models.notification import Notification
+from models.email_otp import EmailOTP
+
+
