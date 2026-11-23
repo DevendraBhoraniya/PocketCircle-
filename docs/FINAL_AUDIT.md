@@ -42,16 +42,12 @@ The baseline audit confirms that the core application features, React frontend U
 
 ---
 
-### Finding 2: Personal Developer Email Exposed in Public API Responses
+### Finding 2: Personal Developer Email Exposed in Public API Responses (Resolved)
 - **Severity:** High (Privacy / Security)
-- **File & Line:** `Backend/routes/auth.py:L143, L245, L338`
-- **Actual Problem:** During email OTP dispatch, if the email delivery provider encounters Resend's free-tier sandbox limitation, the API returns a hardcoded status message containing the developer's personal email address:
-  `"Resend Sandbox Restriction: Emails on the free onboarding domain can only be sent to bhoraniyadevendra@gmail.com..."`
-- **Reproduction Evidence:**
-  `git grep -n "bhoraniyadevendra@gmail.com" Backend/` matches lines 143, 245, and 338 in `Backend/routes/auth.py`.
-- **Recommended Correction:** Replace the hardcoded developer address with a neutral, generic notification (or read dynamically from `settings.RESEND_FROM_EMAIL`):
-  `"Emails in sandbox mode can only be delivered to verified domain recipients. Please check the server console for the verification code in development."`
-- **Affects Deployment or Users:** Yes. Exposes private developer credentials to public API consumers and security scanners.
+- **File & Line:** `Backend/routes/auth.py:L143, L245, L338` (Remediated)
+- **Actual Problem:** During email OTP dispatch, if the email delivery provider encountered Resend's free-tier sandbox limitation, the API previously returned a status message referencing a developer email address.
+- **Recommended Correction:** Replace the developer address with a neutral, generic notification and configure `RESEND_PERMITTED_RECIPIENT` / 403 Forbidden handler instructing evaluators to use Google Sign-In.
+- **Affects Deployment or Users:** Previously exposed private email in error responses; fully resolved with generic messaging.
 
 ---
 

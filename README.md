@@ -55,6 +55,7 @@ flowchart LR
 
 For detailed technical designs, see:
 - [System Architecture](file:///docs/ARCHITECTURE.md)
+- [Authentication & Public Demo Strategy](file:///docs/AUTHENTICATION.md)
 - [Database Schema & ER Diagrams](file:///docs/DATABASE_SCHEMA.md)
 - [Security Review & Threat Model](file:///docs/SECURITY_REVIEW.md)
 - [API Documentation](file:///docs/API_DOCUMENTATION.md)

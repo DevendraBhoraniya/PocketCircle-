@@ -119,10 +119,12 @@ class ConsoleEmailAdapter(BaseEmailAdapter):
 class ResendEmailAdapter(BaseEmailAdapter):
     """
     Sends email using the official Resend Python SDK (https://resend.com/docs/api-reference/emails/send-email).
-    Supports verified custom domains and graceful testing diagnostics for unverified free domains.
+    Supports verified custom domains, explicit testing mode guardrails, and graceful testing diagnostics.
     """
 
     async def send_otp(self, to_email: str, otp: str, purpose: str = "login") -> EmailDeliveryResult:
+        normalized_email = to_email.strip().lower()
+
         if not settings.RESEND_API_KEY or not settings.RESEND_API_KEY.strip():
             return EmailDeliveryResult(
                 success=False,
@@ -130,6 +132,30 @@ class ResendEmailAdapter(BaseEmailAdapter):
                 provider="resend",
                 error="RESEND_API_KEY is not configured",
             )
+
+        # Resend Testing Mode Guardrail:
+        # In testing mode (using onboarding@resend.dev), Resend strictly restricts delivery to the account owner.
+        if settings.RESEND_TESTING_MODE and settings.RESEND_PERMITTED_RECIPIENT:
+            permitted = settings.RESEND_PERMITTED_RECIPIENT.strip().lower()
+            if normalized_email != permitted:
+                logger.info(
+                    "Resend testing mode active: delivery rejected for non-permitted recipient"
+                )
+                if settings.ENVIRONMENT == "development":
+                    console_adapter = ConsoleEmailAdapter()
+                    await console_adapter.send_otp(normalized_email, otp, purpose)
+                    return EmailDeliveryResult(
+                        success=True,
+                        status="sandbox_restricted",
+                        provider="resend",
+                        error="Email verification is currently available only for the configured demo account. Please use Google Sign-In to access the public demo.",
+                    )
+                return EmailDeliveryResult(
+                    success=False,
+                    status="sandbox_restricted",
+                    provider="resend",
+                    error="Email verification is currently available only for the configured demo account. Please use Google Sign-In to access the public demo.",
+                )
 
         subject, plain_content, html_content = build_otp_templates(otp, purpose)
         api_key = settings.RESEND_API_KEY.strip()
@@ -143,7 +169,7 @@ class ResendEmailAdapter(BaseEmailAdapter):
 
         params: resend.Emails.SendParams = {
             "from": from_email,
-            "to": [to_email.strip()],
+            "to": [normalized_email],
             "subject": subject,
             "html": html_content,
             "text": plain_content,
@@ -153,8 +179,7 @@ class ResendEmailAdapter(BaseEmailAdapter):
             # Send using official Resend Python SDK in thread pool
             response = await asyncio.to_thread(resend.Emails.send, params)
             message_id = response.get("id") if isinstance(response, dict) else getattr(response, "id", None)
-            logger.info("Email delivered via Resend SDK to %s (id: %s)", to_email, message_id)
-            print(f"\n[RESEND SUCCESS] Verification email sent to {to_email} (message_id: {message_id})\n")
+            logger.info("Email delivered via Resend SDK successfully (id: %s)", message_id)
             return EmailDeliveryResult(
                 success=True,
                 status="provider_sent",
@@ -164,56 +189,55 @@ class ResendEmailAdapter(BaseEmailAdapter):
 
         except ResendError as exc:
             err_msg = str(exc)
-            logger.warning("Resend error sending to %s: %s", to_email, err_msg)
+            logger.warning("Resend error sending OTP: %s", err_msg)
 
             # Check if this is the free testing domain restriction
-            is_sandbox_restriction = "only send testing emails to your own email address" in err_msg.lower()
+            is_sandbox_restriction = (
+                "only send testing emails to your own email address" in err_msg.lower()
+                or "validation_error" in err_msg.lower()
+            )
 
             if is_sandbox_restriction:
-                print(
-                    f"\n" + "=" * 60 + "\n"
-                    f"[RESEND NOTICE - TESTING RESTRICTION]\n"
-                    f"Target recipient: {to_email}\n"
-                    f"Resend message:   {err_msg}\n"
-                    f"Explanation:      Resend's default 'onboarding@resend.dev' domain only delivers to the Resend account owner.\n"
-                    f"In development:   Logging OTP code to dev console so testing is not blocked.\n"
-                    f"In production:    Verify your domain at https://resend.com/domains.\n"
-                    + "=" * 60 + "\n"
-                )
+                if settings.ENVIRONMENT == "development":
+                    console_adapter = ConsoleEmailAdapter()
+                    await console_adapter.send_otp(normalized_email, otp, purpose)
+                    return EmailDeliveryResult(
+                        success=True,
+                        status="sandbox_restricted",
+                        provider="resend",
+                        error="Email verification is currently available only for the configured demo account. Please use Google Sign-In to access the public demo.",
+                    )
 
-            if settings.ENVIRONMENT == "development":
-                console_adapter = ConsoleEmailAdapter()
-                await console_adapter.send_otp(to_email, otp, purpose)
                 return EmailDeliveryResult(
-                    success=True,
-                    status="sandbox_restricted" if is_sandbox_restriction else "console_logged",
+                    success=False,
+                    status="sandbox_restricted",
                     provider="resend",
-                    error=err_msg,
+                    error="Email verification is currently available only for the configured demo account. Please use Google Sign-In to access the public demo.",
                 )
 
             return EmailDeliveryResult(
                 success=False,
                 status="failed",
                 provider="resend",
-                error=err_msg,
+                error="Email delivery provider encountered an error.",
             )
 
         except Exception as exc:
-            logger.error("Failed to deliver via Resend SDK: %s", exc)
+            logger.error("Failed to deliver via Resend SDK: %s", type(exc).__name__)
             if settings.ENVIRONMENT == "development":
                 console_adapter = ConsoleEmailAdapter()
-                await console_adapter.send_otp(to_email, otp, purpose)
+                await console_adapter.send_otp(normalized_email, otp, purpose)
                 return EmailDeliveryResult(
                     success=True,
                     status="console_logged",
                     provider="resend",
-                    error=str(exc),
+                    error="Resend delivery failed; console logged in development.",
                 )
             return EmailDeliveryResult(
                 success=False,
                 status="failed",
                 provider="resend",
-                error=f"Network error communicating with Resend: {str(exc)}",
+                error="Network error communicating with email provider.",
             )
 
 

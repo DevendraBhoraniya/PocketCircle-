@@ -28,6 +28,8 @@ class Settings(BaseSettings):
     EMAIL_PROVIDER: Literal["auto", "resend", "smtp", "console"] = "auto"
     RESEND_API_KEY: str | None = None
     RESEND_FROM_EMAIL: str = "PocketCircle <onboarding@resend.dev>"
+    RESEND_TESTING_MODE: bool = True
+    RESEND_PERMITTED_RECIPIENT: str | None = None
 
     # SMTP / Legacy Email Settings
     SMTP_HOST: str | None = None

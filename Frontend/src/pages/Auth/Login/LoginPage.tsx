@@ -308,7 +308,7 @@ export default function LoginPage() {
         </h1>
 
         <p className="max-w-xl text-lg font-normal leading-relaxed text-steel">
-          Sign in seamlessly using email, password, and OTP email confirmation, or continue with Google.
+          Sign in instantly using Google Sign-In for the public HR demo, or continue with email and password.
           PocketCircle generates your private 10-digit numeric Pocket ID for zero-trace debt settlement.
         </p>
 
@@ -390,6 +390,52 @@ export default function LoginPage() {
                   {mode === "signin"
                     ? "Enter your credentials. We'll send an OTP to your email to confirm your login."
                     : "Fill in your details below. You will receive an OTP to confirm your email."}
+                </p>
+              </div>
+
+              {/* Primary Public Option: Google Sign-In */}
+              <div className="space-y-3.5 pb-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-steel">
+                    Primary Public Sign-In
+                  </span>
+                  <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-700">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                    Recommended for HR Demo
+                  </span>
+                </div>
+
+                <div className="flex justify-center w-full">
+                  <GoogleLogin
+                    onSuccess={handleGoogleSuccess}
+                    onError={() =>
+                      setError("Google sign-in was cancelled or unavailable. Please try again.")
+                    }
+                    text="continue_with"
+                    shape="pill"
+                    theme="outline"
+                    size="large"
+                    width="100%"
+                  />
+                </div>
+              </div>
+
+              {/* Or Divider */}
+              <div className="relative my-2 flex items-center justify-center">
+                <div className="w-full border-t border-sand" />
+                <span className="absolute bg-paper-white px-3 text-xs uppercase tracking-wider text-steel font-medium">
+                  or continue with email
+                </span>
+              </div>
+
+              {/* Demo Notice for Email Form */}
+              <div className="rounded-xl border border-sand bg-parchment/60 p-3 space-y-1 text-xs text-ink-black">
+                <div className="flex items-center gap-1.5 font-semibold text-steel">
+                  <IconExclamation size={13} className="text-amber-600 shrink-0" />
+                  <span>Resend Testing Mode Notice</span>
+                </div>
+                <p className="leading-relaxed text-steel text-[11px]">
+                  Email OTP verification is currently restricted to the pre-configured demo account. For unrestricted public evaluation, please use <strong>Google Sign-In</strong> above.
                 </p>
               </div>
 
@@ -497,31 +543,6 @@ export default function LoginPage() {
                   )}
                 </button>
               </form>
-
-              {/* Or Divider */}
-              <div className="relative my-4 flex items-center justify-center">
-                <div className="w-full border-t border-sand" />
-                <span className="absolute bg-paper-white px-3 text-xs uppercase tracking-wider text-steel font-medium">
-                  or
-                </span>
-              </div>
-
-              {/* Google Login Component */}
-              <div className="space-y-4">
-                <div className="flex justify-center">
-                  <GoogleLogin
-                    onSuccess={handleGoogleSuccess}
-                    onError={() =>
-                      setError("Google sign-in was cancelled or unavailable. Please try again.")
-                    }
-                    text="continue_with"
-                    shape="pill"
-                    theme="outline"
-                    size="large"
-                    width="100%"
-                  />
-                </div>
-              </div>
             </>
           ) : (
             /* Stage 2: OTP Verification */
@@ -556,10 +577,10 @@ export default function LoginPage() {
                 <div className="rounded-[16px] border border-amber-300 bg-amber-50/90 p-4 space-y-2 text-xs text-amber-900">
                   <div className="flex items-center gap-1.5 font-bold text-amber-900">
                     <IconExclamation size={15} className="text-amber-600" />
-                    <span>Resend Sandbox Notice</span>
+                    <span>Resend Testing Mode Notice</span>
                   </div>
                   <p className="leading-relaxed text-amber-800">
-                    Resend&apos;s default testing domain (<code>onboarding@resend.dev</code>) restricts email delivery strictly to the account owner (<strong>bhoraniyadevendra@gmail.com</strong>).
+                    Email verification is currently available only for the configured demo account. Please use Google Sign-In to access the public demo.
                   </p>
                   {devOtp && (
                     <div className="flex items-center justify-between pt-2 border-t border-amber-200">

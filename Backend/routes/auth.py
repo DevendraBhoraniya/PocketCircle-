@@ -129,9 +129,14 @@ async def email_password_login(
     delivery_error = getattr(delivery, "error", None)
 
     if not is_success and settings.ENVIRONMENT != "development":
+        if delivery_status == "sandbox_restricted":
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail=delivery_error or "Email verification is currently available only for the configured demo account. Please use Google Sign-In to access the public demo.",
+            )
         raise HTTPException(
             status_code=status.HTTP_502_BAD_GATEWAY,
-            detail="Failed to dispatch verification email. Please contact support or try again.",
+            detail="Failed to dispatch verification email. Please use Google Sign-In to access the public demo.",
         )
 
     # dev_otp is strictly restricted to local development environments when running console fallback or sandbox restricted
@@ -231,9 +236,14 @@ async def email_password_register(
     delivery_error = getattr(delivery, "error", None)
 
     if not is_success and settings.ENVIRONMENT != "development":
+        if delivery_status == "sandbox_restricted":
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail=delivery_error or "Email verification is currently available only for the configured demo account. Please use Google Sign-In to access the public demo.",
+            )
         raise HTTPException(
             status_code=status.HTTP_502_BAD_GATEWAY,
-            detail="Failed to dispatch verification email. Please contact support or try again.",
+            detail="Failed to dispatch verification email. Please use Google Sign-In to access the public demo.",
         )
 
     # dev_otp is strictly restricted to local development environments when running console fallback or sandbox restricted
@@ -459,9 +469,14 @@ async def resend_otp(
     delivery_error = getattr(delivery, "error", None)
 
     if not is_success and settings.ENVIRONMENT != "development":
+        if delivery_status == "sandbox_restricted":
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail=delivery_error or "Email verification is currently available only for the configured demo account. Please use Google Sign-In to access the public demo.",
+            )
         raise HTTPException(
             status_code=status.HTTP_502_BAD_GATEWAY,
-            detail="Failed to dispatch verification email. Please contact support or try again.",
+            detail="Failed to dispatch verification email. Please use Google Sign-In to access the public demo.",
         )
 
     # dev_otp is strictly restricted to local development environments when running console fallback or sandbox restricted
@@ -525,6 +540,14 @@ async def google_login(
         db.add(user)
         await db.flush()
     else:
+        # Prevent unauthorized account linking:
+        # If the account is already bound to a different Google identity, reject linking.
+        if user.google_sub and user.google_sub != google_sub:
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="An account with this email is already linked to a different Google account.",
+            )
+
         # Link google_sub and verify email if not already set
         if not user.google_sub:
             user.google_sub = google_sub
