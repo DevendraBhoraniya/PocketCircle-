@@ -60,13 +60,13 @@ jobs:
 
       - name: Run test suite
         env:
-          DATABASE_URL: sqlite+aiosqlite:///:memory:
-          JWT_SECRET: testsecretkey1234567890testsecretkey123456
-          JWT_ALGORITHM: HS256
-          ACCESS_TOKEN_EXPIRE_MINUTES: 30
-          REFRESH_TOKEN_EXPIRE_DAYS: 30
-          GOOGLE_CLIENT_ID: test-client-id.apps.googleusercontent.com
+          DATABASE_URL: "sqlite+aiosqlite:///:memory:"
+          JWT_SECRET: "testsecretkey1234567890testsecretkey123456"
+          JWT_ALGORITHM: "HS256"
+          ACCESS_TOKEN_EXPIRE_MINUTES: "30"
+          REFRESH_TOKEN_EXPIRE_DAYS: "30"
+          GOOGLE_CLIENT_ID: "test-client-id.apps.googleusercontent.com"
           COOKIE_SECURE: "False"
-          COOKIE_SAMESITE: lax
+          COOKIE_SAMESITE: "lax"
         run: pytest tests -o pythonpath=.
 
